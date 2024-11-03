@@ -10,7 +10,7 @@ def is_prime(n):
       return False
   return True
 
-def find_next_prime_if_not_prime(n): #fajnie jakby wpisywane liczby były większe od 2 lub nawet wyżej
+def find_prime(n): #fajnie jakby wpisywane liczby były większe od 2 lub nawet wyżej
   if (is_prime(n)): return int(n)
   else:
     next_number = n + 1

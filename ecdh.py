@@ -3,7 +3,7 @@ from scripts import *
 # krzywa eliptyczna ma postac y^2 = x^3 + ax + b
 # Funckja sprawdza, czy argument X należy do krzywej eliptycznej nad ciałem o wielkości p
 # Jeśli nie to bierzę następną liczbę całkowitą, która należy do krzywej eliptycznej
-def ECDH_check_X(a, b, p, X, positive):
+def check_X(a, b, p, X, positive):
   X = int(X) % p
   Y2 = (X**3 + a*X + b) % p
   Y = math.sqrt(Y2)
@@ -22,10 +22,10 @@ def ECDH_check_X(a, b, p, X, positive):
           Y = -Y
           Y = Y % p
           return X, int(Y)
-      else: return ECDH_check_X(a, b, p, X+1, positive)
-    else: return ECDH_check_X(a, b, p, X+1, positive)
+      else: return check_X(a, b, p, X+1, positive)
+    else: return check_X(a, b, p, X+1, positive)
 
-def ECC_point_to_point(P, Q, k, p, a):
+def point_to_point(P, Q, k, p, a):
   R = Q
   xp, yp = P
   for _ in range(k-1):
@@ -43,34 +43,18 @@ def ECC_point_to_point(P, Q, k, p, a):
       R = xr, yr
   return R
 
-def generate_public_key_ECDH(a, b, c, p, X, positive):
-  p = find_next_prime_if_not_prime(p)
-  G = ECDH_check_X(a, b, p, X, positive)
-  C = ECC_point_to_point(G, G, c, p, a)
+def generate_public_key(a, b, c, p, X, positive):
+  p = find_prime(p)
+  G = check_X(a, b, p, X, positive)
+  C = point_to_point(G, G, c, p, a)
   return C
 
-a = 322
-b = 964
-p = 112300000
-X = 22
-c = 60
-d = 40
-cd = c*d
-positive = True
-
-def generate_private_key_ECDH(a, b, d, p, C):
-  p = find_next_prime_if_not_prime(p)
-  cdG = ECC_point_to_point(C, C, d, p, a)
+def generate_private_key(a, b, d, p, C):
+  p = find_prime(p)
+  cdG = point_to_point(C, C, d, p, a)
   return cdG
 
-def generate_private_key_rightaway_ECDH(a, b, c, d, p, X, positive):
-  C = generate_public_key_ECDH(a, b, c, p, X, positive)
-  cdG = generate_private_key_ECDH(a, b, d, p, C)
+def generate_private_key_rightaway(a, b, c, d, p, X, positive):
+  C = generate_public_key(a, b, c, p, X, positive)
+  cdG = generate_private_key(a, b, d, p, C)
   return cdG
-
-C = generate_public_key_ECDH(a, b, c, p, X, positive)
-print(C)
-cdG = generate_private_key_ECDH(a, b, d, p, C)
-print(cdG)
-
-generate_private_key_rightaway_ECDH(a, b, c, d, p, X, positive)
