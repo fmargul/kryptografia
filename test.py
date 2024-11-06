@@ -1,5 +1,6 @@
 from rsa import *
 from scripts import *
+from dss import *
 
 # RSA
 
@@ -32,3 +33,13 @@ print("Blocks in figures:", numbers)
 # Conversion back from numbers to text
 recovered_text = convert_numbers_to_text(numbers)
 print("Recovered text:", recovered_text)
+
+
+# Digital Signature Algorithm (DSA) - Digital Signature Standard (DSS) 
+
+#message = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+#public_key, private_key = generate_keys()
+#signature = sign_message(message, private_key, public_key)
+
+#is_valid = verify_signature(message, signature, public_key, public_key)
+#print("Is the signature correct?", is_valid)
