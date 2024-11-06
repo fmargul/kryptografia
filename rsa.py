@@ -36,27 +36,3 @@ def rsa_get_private_exponent(e, euler_n):         # d = e^-1 mod phi(n)
     return -1
   else:
     return x % euler_n
-
-
-
-# TEST
-
-p, q = rsa_get_private_key_primes(32)
-print(p, q)
-n = p*q
-print(n)
-euler_n = (p-1)*(q-1)
-print(euler_n)
-e = 65537
-d = rsa_get_private_exponent(e, euler_n)
-print(e, d)
-
-test_public = PublicKey(e,n)
-test_private = PrivateKey(d,p,q)
-
-message = 420
-encrypted = pow(message,test_public.e, test_public.n)
-print(encrypted)
-decrypted = pow(encrypted,test_private.d,(test_private.p*test_private.q))
-print(decrypted)
-
