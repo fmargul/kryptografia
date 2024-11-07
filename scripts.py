@@ -1,4 +1,3 @@
-import numpy as np #unused
 import math
 import random
 
@@ -80,3 +79,14 @@ def convert_numbers_to_text(numbers):
     # Converts a list of numbers (blocks) into full text
     text = blocks_to_text(numbers)
     return text
+
+# Funkcja do manualnego potęgowania z modulo (algorytm szybkiego potęgowania)
+def modular_exponentiation(base, exp, mod):
+    result = 1
+    base = base % mod
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        base = (base * base) % mod
+        exp = exp // 2
+    return result

@@ -1,6 +1,7 @@
 from rsa import *
 from scripts import *
 from dss import *
+from diffie_hellman import *
 
 # RSA test on a number
 
@@ -62,3 +63,7 @@ print("Recovered text:", decrypted_text,"\n")
 
 #is_valid = verify_signature(message, signature, public_key, public_key)
 #print("Is the signature correct?", is_valid)
+
+# Uruchomienie testu dla algorytmu Diffiego-Hellmana
+if __name__ == "__main__":
+    test_diffie_hellman()
