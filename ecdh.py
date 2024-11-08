@@ -1,60 +1,92 @@
 from scripts import *
+import random
 
-# krzywa eliptyczna ma postac y^2 = x^3 + ax + b
-# Funckja sprawdza, czy argument X należy do krzywej eliptycznej nad ciałem o wielkości p
-# Jeśli nie to bierzę następną liczbę całkowitą, która należy do krzywej eliptycznej
-def check_X(a, b, p, X, positive):
-  X = int(X) % p
-  Y2 = (X**3 + a*X + b) % p
-  Y = math.sqrt(Y2)
-  if Y % 1 == 0:
-    if (positive): return X, int(Y)
-    else:
-      Y = -Y
-      Y = Y % p
-      return X, int(Y)
-  else:
-    if pow(Y2, int((p-1)/2), p) == 1:
-      if p % 4 == 3:
-        Y = pow(Y2, int((p+1)/4), p)
-        if (positive): return X, int(Y)
-        else:
-          Y = -Y
-          Y = Y % p
-          return X, int(Y)
-      else: return check_X(a, b, p, X+1, positive)
-    else: return check_X(a, b, p, X+1, positive)
-
-def point_to_point(P, Q, k, p, a):
-  R = Q
+def add_points(P, Q, p, a, b):
   xp, yp = P
-  for _ in range(k-1):
-    Q = R
-    if (Q != P):
-      xq, yq = Q
-      s = (yq - yp) * pow(xq - xp, -1, p) % p
-      xr = (s**2-xq-xp) % p
-      yr = (s*(xq-xr)-yq) % p
-      R = xr, yr
-    else:
-      s = (3 * xp ** 2 + a) * pow(2 * yp, -1, p) % p
-      xr = (s**2-2*xp) % p
-      yr = (s*(xp - xr) - yp) % p
-      R = xr, yr
-  return R
+  xq, yq = Q
+  if xp == xq and yp == yq:
+    s = (3 * xp * xq + a) * pow(2 * yp, -1, p)
+  else:
+    s = (yq - yp) * pow(xq - xp, -1, p)
 
-def generate_public_key(a, b, c, p, X, positive):
-  p = find_prime(p)
-  G = check_X(a, b, p, X, positive)
-  C = point_to_point(G, G, c, p, a)
+  xr = (s*s - xp - xq) % p
+  yr = (s * (xp - xr) - yp) % p
+
+  is_on_curve(P, p, a, b)
+
+  return xr, yr
+
+
+def is_on_curve(P, p, a, b):
+  x, y = P
+  assert (y*y) % p == (pow(x, 3, p) + a*x + b) % p
+  
+
+def apply_double_and_add_method(G, k, p, a, b):
+  target_point = G
+
+  k_binary = bin(k)[2:]
+
+  for i in range(1, len(k_binary)):
+    current_bit = k_binary[i:i+1]
+
+    target_point = add_points(target_point, target_point, p, a, b)
+
+    if current_bit == "1":
+      target_point = add_points(target_point, G, p, a, b)
+  
+  is_on_curve(target_point, p, a, b)
+
+  return target_point
+
+
+def generate_public_key(a, b, c, G, p):
+  p = find_prime_by_probability(p, 5)
+  C = apply_double_and_add_method(G, c, p, a, b)
   return C
 
-def generate_private_key(a, b, d, p, C):
-  p = find_prime(p)
-  cdG = point_to_point(C, C, d, p, a)
+
+def generate_shared_key(a, b, c, D, p):
+  p = find_prime_by_probability(p, 5)
+  cdG = apply_double_and_add_method(D, c, p, a, b)
   return cdG
 
-def generate_private_key_rightaway(a, b, c, d, p, X, positive):
-  C = generate_public_key(a, b, c, p, X, positive)
-  cdG = generate_private_key(a, b, d, p, C)
-  return cdG
+
+def test_ECDH():
+    p = pow(2, 256) - pow(2, 32) - pow(2, 9) - pow(2, 8) - pow(2, 7) - pow(2, 6) - pow(2, 4) - pow(2, 0)
+    a = 0  # Parametr A w secp256k1
+    b = 7  # Parametr B w secp256k1
+    G = (55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424)
+    print(f"Prime nubmer: {p}")
+    print(f"Curve: y**2 = x**3 + {a}x + {b}")
+    print(f"Generator: {G}")
+
+    c = random.getrandbits(int(math.log2(p)))
+    d = random.getrandbits(int(math.log2(p)))
+
+    print()
+    print(f"Private key (Alice): {c}")
+    print(f"Private key (Bob): {d}")
+    
+    # Wyliczanie wartości publicznego klucza dla alice i boba
+    
+    C = generate_public_key(a, b, c, G, p)
+    D = generate_public_key(a, b, d, G, p)
+    print()
+    print(f"Public key (Alice): {C}")
+    print(f"Public key (Bob): {D}")
+
+    # Obliczenie wspólnego sekretu
+    alice_shared_secret = generate_shared_key(a, b, d, C, p)
+    bob_shared_secret = generate_shared_key(a, b, c, D, p)
+
+    print()
+    print(f"Shared secret (Alice): {alice_shared_secret}")
+    print(f"Shared secret (Bob): {bob_shared_secret}")
+    
+    # Sprawdzenie, czy oba sekrety są równe
+    print()
+    if alice_shared_secret == bob_shared_secret:
+        print("The shared secret is the same for Alice and Bob.")
+    else:
+        print("Error - the shared secret is not the same.")

@@ -2,6 +2,7 @@ from rsa import *
 from scripts import *
 from dss import *
 from diffie_hellman import *
+from ecdh import *
 
 # RSA test on a number
 
@@ -67,3 +68,6 @@ print("Recovered text:", decrypted_text,"\n")
 # Uruchomienie testu dla algorytmu Diffiego-Hellmana
 if __name__ == "__main__":
     test_diffie_hellman()
+
+print()
+test_ECDH()
