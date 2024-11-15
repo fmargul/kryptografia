@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block title %} Home Page {% endblock %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <button type="submit">Dodaj punkty do siebie</button>
+    <p>{{ text|safe}}</p>
+</form>
+{% endblock %}
