@@ -1,7 +1,7 @@
 import math
 import random
 
-#from constants import BLOCK_SIZE
+from .constants import BLOCK_SIZE
 
 def is_prime(n):
   if (n <= 1): return False
@@ -53,3 +53,40 @@ def find_prime_by_probability(n, accuracy):
       next_number += 1
     return int(next_number)
 
+def text_to_blocks(text, block_size=BLOCK_SIZE):
+    # Divides the text into blocks of a specified size and converts each block into a number
+    blocks = []
+    for i in range(0, len(text), block_size):
+        block = text[i:i + block_size]
+        block_number = int.from_bytes(block.encode('utf-8'), 'big')
+        blocks.append(block_number)
+    return blocks
+
+def blocks_to_text(blocks):
+    # Converts a list of numbers (blocks) into text
+    text = ''
+    for block in blocks:
+        byte_length = (block.bit_length() + 7) // 8
+        text += block.to_bytes(byte_length, 'big').decode('utf-8')
+    return text
+
+def convert_text_to_numbers(text):
+    # Converts text into a list of numbers in block form
+    blocks = text_to_blocks(text)
+    return blocks
+
+def convert_numbers_to_text(numbers):
+    # Converts a list of numbers (blocks) into full text
+    text = blocks_to_text(numbers)
+    return text
+
+# Funkcja do manualnego potęgowania z modulo (algorytm szybkiego potęgowania)
+def modular_exponentiation(base, exp, mod):
+    result = 1
+    base = base % mod
+    while exp > 0:
+        if exp % 2 == 1:
+            result = (result * base) % mod
+        base = (base * base) % mod
+        exp = exp // 2
+    return result
