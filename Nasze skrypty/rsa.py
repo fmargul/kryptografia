@@ -1,5 +1,7 @@
 from scripts import *
 
+from constants import BLOCK_SIZE
+
 class PublicKey:
   def __init__(self, e, n):
     self.e = e
@@ -38,7 +40,7 @@ def rsa_get_private_exponent(e, euler_n):         # d = e^-1 mod phi(n)
     return x % euler_n
 
 def get_RSA_key_pair():
-  p, q = rsa_get_private_key_primes(128)
+  p, q = rsa_get_private_key_primes(8*BLOCK_SIZE)
   print(p, q)
   n = p*q
   print(n)

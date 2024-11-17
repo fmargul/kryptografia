@@ -38,10 +38,10 @@ def is_prime_by_probability(n, accuracy):
       continue
 
     for _ in range(s - 1):
-      x = pow(x, 2, n)        # tutaj zmienione w potędze 'x' zamiast 'a'
+      x = pow(x, 2, n)        
       if x == n - 1:
         break
-    else:                     # else tutaj powinien być do fora (nie wiedziałem że tak można) zamiast do ifa
+    else:                     
       return False
   return True
 
