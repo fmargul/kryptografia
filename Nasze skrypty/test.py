@@ -1,13 +1,10 @@
-from rsa import *
+from rsa_crypt import *
 from scripts import *
 from dss import *
 from diffie_hellman import *
 from ecdh import *
 
 # RSA test on a number
-
-test_RSA_number()
-test_RSA_text()
 
 # Digital Signature Algorithm (DSA) - Digital Signature Standard (DSS) 
 
@@ -24,3 +21,4 @@ if __name__ == "__main__":
 
 print()
 test_ECDH()
+run_RSA_tests()
