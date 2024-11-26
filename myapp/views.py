@@ -7,6 +7,9 @@ from .add_points import ecc_check_data
 def home(request):
   return render(request, "home.html")
 
+def multiply_points(request):
+  return render(request, "multiply_points.html")
+
 class AddPointsView(TemplateView):
   template_name = 'add_points.html'
 
