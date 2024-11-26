@@ -44,8 +44,9 @@ def rsa_get_private_exponent(e, euler_n):         # d = e^-1 mod phi(n)
   else:
     return x % euler_n
 
-def get_RSA_key_pair():
-  p, q = rsa_get_private_key_primes(8*BLOCK_SIZE)
+def get_RSA_key_pair(size_multiplier):
+  print("Generating " + str(int(8*size_multiplier*BLOCK_SIZE)) + "-bit keys...")
+  p, q = rsa_get_private_key_primes(int(8*size_multiplier*BLOCK_SIZE))
   #print(p, q)
   n = p*q
   #print(n)
@@ -126,12 +127,14 @@ def test_RSA_text(test_public, test_private, using_CRT):
   t2 = time.time()
   print("Recovered text:", decrypted_text,"\n")
   print("Decryption - elapsed time: " + str(round(t2-t1,3)) + " seconds.")
+  return t2-t1
 
 def run_RSA_tests():
-  test_public, test_private = get_RSA_key_pair()
+  test_public, test_private = get_RSA_key_pair(1)
   print("Public Key details:\ne="+str(test_public.e)+"\nn="+str(test_public.n))
   print("Private Key details:\nd="+str(test_private.d)+"\np="+str(test_private.p)+"\nq="+str(test_private.q))
   test_RSA_number(test_public, test_private, False)
   test_RSA_number(test_public, test_private, True)
   test_RSA_text(test_public, test_private, False)
   test_RSA_text(test_public, test_private, True)
+
