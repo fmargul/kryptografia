@@ -12,10 +12,9 @@ class EcdhPublicForm(forms.Form):
     chosen_curve = forms.ChoiceField( label='Krzywa dla generatora', choices=choices_, required=False) 
 
 class EcdhSharedForm(forms.Form):
-    X1 = forms.IntegerField()
-    X2 = forms.IntegerField()
-    Y1 = forms.IntegerField()
-    Y2 = forms.IntegerField()
-    _a = forms.IntegerField()
-    _b = forms.IntegerField()
-    _p = forms.IntegerField()
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    a = forms.IntegerField(label="Współrzędna krzywej (a)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    b = forms.IntegerField(label="Współrzędna krzywej (b)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    X = forms.IntegerField(label="Pierwsza współrzędna klucza publicznego (X)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    Y = forms.IntegerField(label="Druga współrzędna klucza publicznego (Y)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    A = forms.IntegerField(label="Klucz prywatny (A)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))

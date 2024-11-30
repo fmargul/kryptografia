@@ -1,4 +1,84 @@
 {% extends "base.html" %} {% block title %} Home Page {% endblock %}
 {% block content %}
 
+{% if form.non_field_errors %}
+<div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
+    <ul>
+        {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<form method="post" style="max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="form-field" style="margin-bottom: 15px;">
+            <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <ul class="errorlist" style="color: red; padding-left: 20px; list-style-type: none;">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div style="display: flex; gap: 10px; justify-content: center;">
+        <button type="submit" name="validate" style="padding: 10px 20px; background-color: #6aa8bd; color: white; border: none; border-radius: 4px;">
+            Waliduj/Oblicz
+        </button>
+    </div>
+</form>
+
+{% if result %}
+    <h2>Wyniki:</h2>
+    <table border="1" style="border-collapse: collapse; width: 100%; text-align: left; margin-top: 20px;">
+        <thead style="background-color: #f2f2f2; text-align: center;">
+            <tr>
+                <th style="padding: 10px; width: 50%;">Parametr</th>
+                <th style="padding: 10px; width: 50%;">Wartość</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Liczba pierwsza (p)</strong></td>
+                <td>{{ result.p }}</td>
+            </tr>
+            <tr>
+                <td><strong>Współrzędna krzywej (a)</strong></td>
+                <td>{{ result.a }}</td>
+            </tr>
+            <tr>
+                <td><strong>Współrzędna krzywej (b)</strong></td>
+                <td>{{ result.b }}</td>
+            </tr>
+            <tr>
+                <td><strong>Pierwsza współrzędna klucza publicznego (X)</strong></td>
+                <td>{{ result.gx }}</td>
+            </tr>
+            <tr>
+                <td><strong>Druga współrzędna klucza publicznego (Y)</strong></td>
+                <td>{{ result.gy }}</td>
+            </tr>
+            <tr>
+                <td><strong>Klucz prywatny (A)</strong></td>
+                <td>{{ result.A }}</td>
+            </tr>
+            <tr>
+                <td><strong>Pierwsza współrzędna klucza wspólnego (X)</strong></td>
+                <td>{{ result.cx }}</td>
+            </tr>
+            <tr>
+                <td><strong>Druga współrzędna klucza wspólnego (Y)</strong></td>
+                <td>{{ result.cy }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
+
 {% endblock %}
