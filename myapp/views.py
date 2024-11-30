@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import Dictionary
 from django.views.generic import TemplateView
-from .forms import AddPointsForm
-from .add_points import ecc_check_data
+from .forms import EcdhPublicForm
+from .ecdh_public import generate_ecdh_public, validate_ecdh_public, calculate_ecdh_public
 
 def home(request):
   return render(request, "home.html")
@@ -10,24 +10,57 @@ def home(request):
 def multiply_points(request):
   return render(request, "multiply_points.html")
 
-class AddPointsView(TemplateView):
-  template_name = 'add_points.html'
+class EcdhSharedView(TemplateView):
+  template_name = 'ecdh_shared.html'
+
+class EcdhPublicView(TemplateView):
+  template_name = 'ecdh_public.html'
 
   def get(self, request):
-    form = AddPointsForm()
+    form = EcdhPublicForm()
     return render(request, self.template_name, {'form': form})
   
   def post(self, request):
-    form = AddPointsForm(request.POST)
-    if form.is_valid():
-      x1 = form.cleaned_data['X1']
-      x2 = form.cleaned_data['X2']
-      y1 = form.cleaned_data['Y1']
-      y2 = form.cleaned_data['Y2']
-      a = form.cleaned_data['_a']
-      b = form.cleaned_data['_b']
-      p = form.cleaned_data['_p']
-      text = ecc_check_data(x1, x2, y1, y2, a, b, p)
-    args = {'form': form, 'text': text}
-    return render(request, self.template_name, args)
+    form = EcdhPublicForm(request.POST)
+    result = None
+    if "generate" in request.POST:
+      if form.is_valid():
+        curve = form.cleaned_data["chosen_curve"]
+        p, a, b, X, Y, A = generate_ecdh_public(curve)
+        form = EcdhPublicForm(initial={
+          "p": p,
+          "a": a,
+          "b": b,
+          "X": X,
+          "Y": Y,
+          "A": A,
+          "chosen_curve": curve,
+        })
+    elif "validate" in request.POST:
+            if form.is_valid():
+                p = form.cleaned_data["p"]
+                a = form.cleaned_data["a"]
+                b = form.cleaned_data["b"]
+                X = form.cleaned_data["X"]
+                Y = form.cleaned_data["Y"]
+                A = form.cleaned_data["A"]
+                valid, error = validate_ecdh_public(p, a, b, X, Y, A)
+                
+                if not valid:
+                    form.add_error(None, error)
+                else:
+                    p, a, b, X, Y, A, cx, cy = calculate_ecdh_public(error[0],error[1],error[2],error[3],error[4],error[5],)
+
+                    result = {
+                        "p": p,
+                        "a": a,
+                        "b": b,
+                        "gx": X,
+                        "gy": Y,
+                        "A": A,
+                        "cx": cx,
+                        "cy": cy,
+                    }
+    return render(request, self.template_name, {"form": form, "result": result})
+
 
