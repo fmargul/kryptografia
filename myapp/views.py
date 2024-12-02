@@ -45,6 +45,9 @@ class EcdhSharedView(TemplateView):
                         "cx": cx,
                         "cy": cy,
                     }
+    elif "reset" in request.POST:
+      form = EcdhSharedForm() 
+
     return render(request, self.template_name, {"form": form, "result": result})
 
 
@@ -97,6 +100,8 @@ class EcdhPublicView(TemplateView):
                         "cx": cx,
                         "cy": cy,
                     }
+    elif "reset" in request.POST:
+      form = EcdhPublicForm() 
     return render(request, self.template_name, {"form": form, "result": result})
 
 

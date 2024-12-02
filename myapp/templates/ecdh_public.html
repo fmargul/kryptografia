@@ -2,7 +2,7 @@
 {% block content %}
 
 {% if form.non_field_errors %}
-<div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 20px;">
+<div style="color: red; border: 1px solid red; padding: 5px; margin-bottom: 20px; background-color: #f9c4c49b; text-align: center;">
     <ul>
         {% for error in form.non_field_errors %}
             <p>{{ error }}</p>
@@ -16,7 +16,7 @@
 
     {% for field in form %}
         <div class="form-field" style="margin-bottom: 15px;">
-            <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px;">{{ field.label }}</label>
+            <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px; text-align: center;">{{ field.label }}</label>
             {{ field }}
             {% if field.errors %}
                 <ul class="errorlist" style="color: red; padding-left: 20px; list-style-type: none;">
@@ -34,6 +34,9 @@
         </button>
         <button type="submit" name="validate" style="padding: 10px 20px; background-color: #6aa8bd; color: white; border: none; border-radius: 4px;">
             Waliduj/Oblicz
+        </button>
+        <button type="submit" name="reset" style="padding: 10px 20px; background-color: #e57373; color: white; border: none; border-radius: 4px;">
+            Wyczyść
         </button>
     </div>
 </form>

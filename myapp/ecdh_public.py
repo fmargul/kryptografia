@@ -193,7 +193,10 @@ def validate_ecdh_public(p, a, b, X, Y, A):
         if Y == None:
             new_point = find_next_point(a, b, p, X)
             return False, f"Punkt o współrzędnej równej {X} nie należy do krzywej. Następny punkt na krzywej: {new_point}"
-
+    if Y == None and X == None:
+        X = random.randint(1, p)
+        new_point = find_next_point(a, b, p, X)
+        X, Y = new_point
     if A == None:
        A = random.randint(1, p)   
     if not (1 < A < p):
