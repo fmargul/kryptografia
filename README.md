@@ -32,7 +32,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 
 ---
 
-## Generowanie klucza sesji w ECDH
+## Generowanie klucza sesji ECDH
 Poniżej znajduje się opis funkcji, ich zastosowania oraz wykorzystywanych algorytmów.
 
 ### Wykorzystane algorytmy:
