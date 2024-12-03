@@ -22,8 +22,8 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 | Zmienna | Typ        | Opis                                                                                                                                   |
 |---------|------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | `p`     | `int`      | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone).                                                                 |
-| `a`     | `int`      | Współczynnik `a` krzywej eliptycznej `y^2` \equiv `x^3` + `ax` + `b` \mod `p`.                                                          |
-| `b`     | `int`      | Współczynnik `b` krzywej eliptycznej `y^2` \equiv `x^3` + `ax` + `b` \mod `p`.                                                                                                |
+| `a`     | `int`      | Współczynnik `a` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.                                                          |
+| `b`     | `int`      | Współczynnik `b` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.                                                                                                |
 | `X`, `Y`| `int`      | Współrzędne generatora na krzywej eliptycznej.                                                                                             |
 | `A`     | `int`      | Prywatny klucz uczestnika (losowa liczba).                                                                                             |
 | `curve` | `str`      | Nazwa standardowej krzywej eliptycznej, np. "NIST256p", "NIST384p" za pomocą której można wygenerować dane do kalkulatora.                                                                     |
