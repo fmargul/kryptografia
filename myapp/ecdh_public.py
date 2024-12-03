@@ -175,7 +175,7 @@ def validate_ecdh_public(p, a, b, X, Y, A):
         return False, "Pola przechowujące liczby p, a i b muszą być uzupełnione!"
     p2 = find_prime_by_probability(p, 50)
     if (p != p2):
-        return False, f"{p} nie jest liczbą pierwszą spróbuj {p2}"
+        return False, f"{p} nie jest liczbą pierwszą, spróbuj {p2}"
     if not (1 < a < p):
        return False, "Liczba a musi być większa od 1 i mniejsza od p!"
     if not (1 < b < p):

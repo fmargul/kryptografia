@@ -1,1 +1,1 @@
-# kryptografia
+# CryptEd: Edukacyjna aplikacja kryptograficzna
