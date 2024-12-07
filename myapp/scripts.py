@@ -53,7 +53,7 @@ def find_prime_by_probability(n, accuracy):
       next_number += 1
     return int(next_number)
 
-def text_to_blocks(text, block_size=BLOCK_SIZE):
+def text_to_blocks(text, block_size):
     # Divides the text into blocks of a specified size and converts each block into a number
     blocks = []
     for i in range(0, len(text), block_size):
@@ -70,9 +70,9 @@ def blocks_to_text(blocks):
         text += block.to_bytes(byte_length, 'big').decode('utf-8')
     return text
 
-def convert_text_to_numbers(text):
+def convert_text_to_numbers(text, block_size):
     # Converts text into a list of numbers in block form
-    blocks = text_to_blocks(text)
+    blocks = text_to_blocks(text, block_size)
     return blocks
 
 def convert_numbers_to_text(numbers):

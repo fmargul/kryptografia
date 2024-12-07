@@ -1,11 +1,10 @@
 from .scripts import *
 import time
-import math
 from .constants import BLOCK_SIZE
 import base64
 import json
 from binascii import Error
-
+from math import log2, floor
 class PublicKey:
   def __init__(self, e, n):
     self.e = e
@@ -140,11 +139,12 @@ def chinese_remainder_theorem_decryption(m, p, q, dp, dq):
 
 def rsa_encrypt_message(text, n,e):
   print("Encrypting text '" + text + "'...")
-  
+  #block_size = len(bin(n)[2:])
+  block_size = floor(log2(n) / 8) 
   #pub_key = get_pub_key_from_data(p,q,e)
 
   blocks_encr_RSA = []
-  numbers_to_encrypt = convert_text_to_numbers(text)
+  numbers_to_encrypt = convert_text_to_numbers(text, block_size)
   for block in numbers_to_encrypt:
       blocks_encr_RSA.append(modular_exponentiation(block, e, n))
 
@@ -167,7 +167,8 @@ def rsa_decrypt_message(b64, p,q,d):
   blocks_decr_RSA = []
   print("Decrypting...")
   for block in blocks_encr_RSA:
-      blocks_decr_RSA.append(modular_exponentiation(block,d,(p*q)))
+      blocks_decr_RSA.append(chinese_remainder_theorem_decryption(block,p,q,modular_exponentiation(d,1,p-1),modular_exponentiation(d,1,q-1)))
+      #blocks_decr_RSA.append(modular_exponentiation(block,d,(p*q)))
       
   print("Decrypted blocks: ", blocks_decr_RSA,"\n")
 
