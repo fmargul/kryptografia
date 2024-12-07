@@ -245,7 +245,7 @@ class DiffieHellmanPublicView(TemplateView):
         result = None
 
         if "generate" in request.POST:
-            p = generate_safe_prime(512, 50) 
+            p = generate_safe_prime(256, 50) 
             g = generate_generator(p)
             private_key = generate_private_key(p)
             form = DiffieHellmanPublicForm(initial={
@@ -292,7 +292,7 @@ class DiffieHellmanSharedView(TemplateView):
         result = None
 
         if "generate" in request.POST:
-            p = generate_safe_prime(512, 50) 
+            p = generate_safe_prime(256, 50) 
             g = generate_generator(p)
             partners_public_key = generate_partners_public_key(g, p)
             private_key = generate_private_key(p)
@@ -315,7 +315,7 @@ class DiffieHellmanSharedView(TemplateView):
                 if not valid:
                     form.add_error(None, error)
                 else:
-                    shared_secret = calculate_shared_secret(p, partners_public_key, private_key)
+                    shared_secret = calculate_shared_secret(partners_public_key, private_key, p)
 
                     result = {
                         "p": p,

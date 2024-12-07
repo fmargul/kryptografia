@@ -12,7 +12,7 @@ def generate_partners_public_key(g, p):
     return modular_exponentiation(g, partners_private_key, p)
 
 # Obliczenie wspólnego sekretu
-def calculate_shared_secret(p, private_key, partners_public_key):
+def calculate_shared_secret(partners_public_key, private_key, p):
     return modular_exponentiation(partners_public_key, private_key, p)
 
 # Walidacja danych

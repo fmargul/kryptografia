@@ -67,19 +67,19 @@ class RSADecryptForm(forms.Form):
     Zaszyfrowana_wiadomość.widget.attrs.update({'style': 'width: 600px;'})
 
 class DiffieHellmanPublicForm(forms.Form):
-    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="")
-    g = forms.IntegerField(label="Generator (g)", required=False, initial="")
-    private_key = forms.IntegerField(label="Klucz prywatny", required=False, initial="")
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    g = forms.IntegerField(label="Generator (g)", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    private_key = forms.IntegerField(label="Klucz prywatny", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
 
     p.widget.attrs.update({'style': 'width: 600px;'})
     g.widget.attrs.update({'style': 'width: 600px;'})
     private_key.widget.attrs.update({'style': 'width: 600px;'})
 
 class DiffieHellmanSharedForm(forms.Form):
-    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="")
-    g = forms.IntegerField(label="Generator (g)", required=False, initial="")
-    partners_public_key = forms.IntegerField(label="Klucz publiczny drugiej strony", required=False, initial="")
-    private_key = forms.IntegerField(label="Twój klucz prywatny", required=False, initial="")
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    g = forms.IntegerField(label="Generator (g)", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    partners_public_key = forms.IntegerField(label="Klucz publiczny drugiej strony", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    private_key = forms.IntegerField(label="Twój klucz prywatny", required=False, initial="", widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
 
     p.widget.attrs.update({'style': 'width: 600px;'})
     g.widget.attrs.update({'style': 'width: 600px;'})
