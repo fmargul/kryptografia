@@ -34,7 +34,6 @@ class EcdhSharedForm(forms.Form):
     X.widget.attrs.update({'style': 'width: 600px;'})
     Y.widget.attrs.update({'style': 'width: 600px;'})
     A.widget.attrs.update({'style': 'width: 600px;'})
-
 class KeysRSAForm(forms.Form):
     p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
     q = forms.IntegerField(label="Liczba pierwsza (q)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
@@ -66,3 +65,23 @@ class RSADecryptForm(forms.Form):
     q.widget.attrs.update({'style': 'width: 600px;'})
     d.widget.attrs.update({'style': 'width: 600px;'})
     Zaszyfrowana_wiadomość.widget.attrs.update({'style': 'width: 600px;'})
+
+class DiffieHellmanPublicForm(forms.Form):
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="")
+    g = forms.IntegerField(label="Generator (g)", required=False, initial="")
+    private_key = forms.IntegerField(label="Klucz prywatny", required=False, initial="")
+
+    p.widget.attrs.update({'style': 'width: 600px;'})
+    g.widget.attrs.update({'style': 'width: 600px;'})
+    private_key.widget.attrs.update({'style': 'width: 600px;'})
+
+class DiffieHellmanSharedForm(forms.Form):
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, initial="")
+    g = forms.IntegerField(label="Generator (g)", required=False, initial="")
+    partners_public_key = forms.IntegerField(label="Klucz publiczny drugiej strony", required=False, initial="")
+    private_key = forms.IntegerField(label="Twój klucz prywatny", required=False, initial="")
+
+    p.widget.attrs.update({'style': 'width: 600px;'})
+    g.widget.attrs.update({'style': 'width: 600px;'})
+    partners_public_key.widget.attrs.update({'style': 'width: 600px;'})
+    private_key.widget.attrs.update({'style': 'width: 600px;'})

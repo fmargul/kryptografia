@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from .models import Dictionary
 from django.views.generic import TemplateView
-from .forms import EcdhPublicForm, EcdhSharedForm, RSADecryptForm, RSAEncryptForm, KeysRSAForm
+from .forms import EcdhPublicForm, EcdhSharedForm, RSADecryptForm, RSAEncryptForm, KeysRSAForm, DiffieHellmanPublicForm, DiffieHellmanSharedForm 
 from .ecdh_public import generate_ecdh_public, validate_ecdh_public, calculate_ecdh_public
 from .ecdh_shared import validate_ecdh_shared, calculate_ecdh_shared
 from .rsa_crypt import rsa_get_private_key_primes, validate_p_q, validate_p_q_e, rsa_get_random_e, rsa_encrypt_message, rsa_decrypt_message
+from .diffie_hellman_public import generate_safe_prime, generate_generator, generate_private_key, calculate_public_key, validate_dh_data_public 
+from .diffie_hellman_shared import generate_partners_public_key, calculate_shared_secret, validate_dh_data_shared
 
 def home(request):
   return render(request, "home.html")
@@ -228,3 +230,102 @@ class RSADecryptView(TemplateView):
 
     args = {'form':form_dec, 'text_dec':text_dec}
     return render(request, self.template_name, args)
+  
+class DiffieHellmanPublicView(TemplateView):
+    template_name = "diffie_hellman_public.html"
+
+    def get(self, request):
+        form = DiffieHellmanPublicForm()
+        result = None
+        
+        return render(request, self.template_name, {"form": form, "result": result})
+
+    def post(self, request):
+        form = DiffieHellmanPublicForm(request.POST)
+        result = None
+
+        if "generate" in request.POST:
+            p = generate_safe_prime(512, 50) 
+            g = generate_generator(p)
+            private_key = generate_private_key(p)
+            form = DiffieHellmanPublicForm(initial={
+                "p": p,
+                "g": g,
+                "private_key": private_key,
+            })
+        elif "validate" in request.POST:
+            if form.is_valid():
+                p = form.cleaned_data["p"]
+                g = form.cleaned_data["g"]
+                private_key = form.cleaned_data["private_key"]
+
+                valid, error = validate_dh_data_public(p, g, private_key)
+                
+                if not valid:
+                    form.add_error(None, error)
+                else:
+                    public_key = calculate_public_key(g, private_key, p)
+
+                    result = {
+                        "p": p,
+                        "g": g,
+                        "private_key": private_key,
+                        "public_key": public_key,
+                    }
+        elif "reset" in request.POST:
+            form = DiffieHellmanPublicForm() 
+        
+        return render(request, self.template_name, {"form": form, "result": result})
+
+
+class DiffieHellmanSharedView(TemplateView):
+    template_name = 'diffie_hellman_shared.html'
+
+    def get(self, request):
+        form = DiffieHellmanSharedForm()
+        result = None
+        
+        return render(request, self.template_name, {"form": form, "result": result})
+
+    def post(self, request):
+        form = DiffieHellmanSharedForm(request.POST)
+        result = None
+
+        if "generate" in request.POST:
+            p = generate_safe_prime(512, 50) 
+            g = generate_generator(p)
+            partners_public_key = generate_partners_public_key(g, p)
+            private_key = generate_private_key(p)
+
+            form = DiffieHellmanSharedForm(initial={
+                "p": p,
+                "g": g,
+                "partners_public_key": partners_public_key,
+                "private_key": private_key,
+            })
+        elif "validate" in request.POST:
+            if form.is_valid():
+                p = form.cleaned_data["p"]
+                g = form.cleaned_data["g"]
+                partners_public_key = form.cleaned_data["partners_public_key"]
+                private_key = form.cleaned_data["private_key"]
+
+                valid, error = validate_dh_data_shared(p, g, partners_public_key, private_key)
+                
+                if not valid:
+                    form.add_error(None, error)
+                else:
+                    shared_secret = calculate_shared_secret(p, partners_public_key, private_key)
+
+                    result = {
+                        "p": p,
+                        "g": g,
+                        "partners_public_key": partners_public_key,
+                        "private_key": private_key,
+                        "shared_secret": shared_secret,
+
+                    }
+        elif "reset" in request.POST:
+            form = DiffieHellmanSharedForm() 
+        
+        return render(request, self.template_name, {"form": form, "result": result})  

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Algorytm Diffiego-Hellmana - generowanie klucza publicznego</h1>
+
+{% if form.non_field_errors %}
+    <div style="color: red; border: 1px solid red; padding: 5px; margin-bottom: 20px; text-align: center; background-color: #f9c4c49b;">
+        <ul>
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<form method="post" style="max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="form-field" style="margin-bottom: 15px;">
+            <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px; text-align: center;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <ul class="errorlist" style="color: red; padding-left: 20px; list-style-type: none;">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div style="display: flex; gap: 10px; justify-content: center;">
+        <button type="submit" name="generate" style="padding: 10px 20px; background-color: #7dbb97; color: white; border: none; border-radius: 4px;">
+            Generuj dane
+        </button>
+        <button type="submit" name="validate" style="padding: 10px 20px; background-color: #6aa8bd; color: white; border: none; border-radius: 4px;">
+            Waliduj/Oblicz
+        </button>
+        <button type="submit" name="reset" style="padding: 10px 20px; background-color: #e57373; color: white; border: none; border-radius: 4px;">
+            Wyczyść
+        </button>
+    </div>
+</form>
+
+{% if result %}
+    <h2 style="text-align: center; margin-bottom: 20px;">Wyniki</h2>
+    <table border="1" style="border-collapse: collapse; width: 100%; text-align: left; margin-top: 20px;">
+        <thead style="background-color: #f2f2f2; text-align: center;">
+            <tr>
+                <th style="padding: 10px; width: 50%;">Parametr</th>
+                <th style="padding: 10px; width: 50%;">Wartość</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Liczba pierwsza (p)</strong></td>
+                <td class="large-number">{{ result.p }}</td>
+            </tr>
+            <tr>
+                <td><strong>Generator (g)</strong></td>
+                <td class="large-number">{{ result.g }}</td>
+            </tr>
+            <tr>
+                <td><strong>Twój klucz prywatny</strong></td>
+                <td class="large-number">{{ result.private_key }}</td>
+            </tr>
+            <tr>
+                <td><strong>Twój klucz publiczny</strong></td>
+                <td class="large-number">{{ result.public_key }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
+
+<style>
+    .large-number {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-width: 100%;
+    }
+</style>
+
+{% endblock %}

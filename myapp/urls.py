@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from myapp.views import EcdhPublicView, EcdhSharedView, RSAKeysView, RSAEncryptView, RSADecryptView
+from myapp.views import EcdhPublicView, EcdhSharedView, RSAKeysView, RSAEncryptView, RSADecryptView, DiffieHellmanPublicView, DiffieHellmanSharedView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -11,4 +11,6 @@ urlpatterns = [
     path('rsa_keys/', RSAKeysView.as_view(), name='rsa_keys'),
     path('rsa_encrypt/', RSAEncryptView.as_view(), name='rsa_encrypt'),
     path('rsa_decrypt/', RSADecryptView.as_view(), name='rsa_decrypt'),
+    path('diffie_hellman_public/', DiffieHellmanPublicView.as_view(), name='diffie_hellman_public'),
+    path('diffie_hellman_shared/', DiffieHellmanSharedView.as_view(), name='diffie_hellman_shared'),
 ]
