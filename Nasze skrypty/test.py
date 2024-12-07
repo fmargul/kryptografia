@@ -16,9 +16,10 @@ from ecdh import *
 #print("Is the signature correct?", is_valid)
 
 # Uruchomienie testu dla algorytmu Diffiego-Hellmana
-if __name__ == "__main__":
-    test_diffie_hellman()
+#if __name__ == "__main__":
+#    test_diffie_hellman()
 
-print()
-test_ECDH()
+#print()
+#test_ECDH()
 run_RSA_tests()
+#run_RSA_tests_with_plot()

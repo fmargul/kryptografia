@@ -1,0 +1,148 @@
+{% extends "base.html" %} {% block title %} Home Page {% endblock %} {% block content %} {% if form.non_field_errors %}
+<div
+  style="
+    color: red;
+    border: 1px solid red;
+    padding: 5px;
+    margin-bottom: 20px;
+    background-color: #f9c4c49b;
+    text-align: center;
+  "
+>
+  <ul>
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<form
+  method="post"
+  style="
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  "
+>
+  {% csrf_token %} {% for field in form %}
+  <div class="form-field" style="margin-bottom: 15px">
+    <label
+      for="{{ field.id_for_label }}"
+      style="
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        text-align: center;
+      "
+      >{{ field.label }}</label
+    >
+    {{ field }} {% if field.errors %}
+    <ul
+      class="errorlist"
+      style="color: red; padding-left: 20px; list-style-type: none"
+    >
+      {% for error in field.errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  <div style="display: flex; gap: 10px; justify-content: center">
+    <button
+      type="submit"
+      name="generate_p_q"
+      style="
+        padding: 10px 20px;
+        background-color: #7dbb97;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      "
+    >
+      Losuj p i q
+    </button>
+    <button
+      type="submit"
+      name="generate_e"
+      style="
+        padding: 10px 20px;
+        background-color: #7dbb97;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      "
+    >
+    Losuj e
+    </button><button
+      type="submit"
+      name="validate"
+      style="
+        padding: 10px 20px;
+        background-color: #6aa8bd;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      "
+    >
+    Waliduj/Oblicz
+    </button>
+    <button
+      type="submit"
+      name="reset"
+      style="
+        padding: 10px 20px;
+        background-color: #e57373;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      "
+    >
+      Wyczyść
+    </button>
+  </div>
+
+  {% if text_dec %}
+  <p style="overflow-wrap: break-word">{{text_dec}}</p>
+  {% endif %}
+</form>
+
+{% if result %}
+    <h2>Wyniki:</h2>
+    <table border="1" style="table-layout: fixed; border-collapse: collapse; width: 100%; text-align: left; margin-top: 20px;">
+        <thead style="background-color: #f2f2f2; text-align: center;">
+            <tr>
+                <th style="padding: 10px; width: 25%;">Parametr</th>
+                <th style="padding: 10px; width: 75%;">Wartość</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Liczba pierwsza (p)</strong></td>
+                <td style="word-wrap: break-word">{{ result.p }}</td>
+            </tr>
+            <tr>
+                <td><strong>Liczba pierwsza (q)</strong></td>
+                <td style="word-wrap: break-word">{{ result.q }}</td>
+            </tr>
+            <tr>
+                <td><strong>Iloczyn p i q (n)</strong></td>
+                <td style="word-wrap: break-word">{{ result.n }}</td>
+            </tr>
+            <tr>
+                <td><strong>Współczynnik klucza publicznego (e)</strong></td>
+                <td style="word-wrap: break-word">{{ result.e }}</td>
+            </tr>
+            <tr>
+                <td><strong>Współczynnik klucza prywatnego (d)</strong></td>
+                <td style="word-wrap: break-word">{{ result.d }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}
+
+{% endblock %}

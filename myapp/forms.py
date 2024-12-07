@@ -34,3 +34,35 @@ class EcdhSharedForm(forms.Form):
     X.widget.attrs.update({'style': 'width: 600px;'})
     Y.widget.attrs.update({'style': 'width: 600px;'})
     A.widget.attrs.update({'style': 'width: 600px;'})
+
+class KeysRSAForm(forms.Form):
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    q = forms.IntegerField(label="Liczba pierwsza (q)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    e = forms.IntegerField(label="Współczynnik klucza publicznego (e)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    #choices_ = ((1024, 1024), (2048, 2048), (4096, 4096)) 
+    #chosen_length = forms.ChoiceField(label="Długość klucza (w bitach)", widget=forms.RadioSelect, choices=choices_, required=True)
+    
+    p.widget.attrs.update({'style': 'width: 600px;'})
+    q.widget.attrs.update({'style': 'width: 600px;'})
+    e.widget.attrs.update({'style': 'width: 600px;'})
+    #chosen_length.widget.attrs.update({'style': 'width: 60px;'})
+
+class RSAEncryptForm(forms.Form):
+    e = forms.IntegerField(label="Współczynnik klucza publicznego (e)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    n = forms.IntegerField(label="Iloczyn p i q (n)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    Wiadomość = forms.CharField(label="Wiadomość do zaszyfrowania", widget=forms.Textarea(attrs={'placeholder': 'Obowiązkowe pole'}),required=False)
+
+    n.widget.attrs.update({'style': 'width: 600px;'})
+    e.widget.attrs.update({'style': 'width: 600px;'})
+    Wiadomość.widget.attrs.update({'style': 'width: 600px;'})
+
+class RSADecryptForm(forms.Form):
+    d = forms.IntegerField(label="Współczynnik klucza prywatnego (d)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    p = forms.IntegerField(label="Liczba pierwsza (p)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    q = forms.IntegerField(label="Liczba pierwsza (q)", required=False, widget=forms.NumberInput(attrs={'placeholder': 'Obowiązkowe pole'}))
+    Zaszyfrowana_wiadomość = forms.CharField(label="Zaszyfrowana wiadomość", widget=forms.Textarea(attrs={'placeholder': 'Obowiązkowe pole'}),required=False)
+
+    p.widget.attrs.update({'style': 'width: 600px;'})
+    q.widget.attrs.update({'style': 'width: 600px;'})
+    d.widget.attrs.update({'style': 'width: 600px;'})
+    Zaszyfrowana_wiadomość.widget.attrs.update({'style': 'width: 600px;'})
