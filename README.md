@@ -2,21 +2,39 @@
 
 ## Generowanie klucza publicznego ECDH
 
-Poniżej znajduje się opis funkcji, ich zastosowania oraz wykorzystywanych algorytmów.
+##### Algorytmy:
 
-### Wykorzystane algorytmy:
+- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a` mod `p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p` ≡ `3` mod `4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
+- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt (`x`, `y`) spełnia równanie krzywej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+- **Znajdowanie najbliższej liczby pierwszej** – Algorytm szuka pierwszej liczby pierwszej większej od `n`, korzystając z testu pierwszości Millera-Rabina.
+- **Rozszerzony algorytm Euklidesa** – wyznaczanie największego wspólnego dzielnika dwóch liczb naturalnych (wykorzystywany do odnajdywanie odwrotności modularnej).
+- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+- **Metoda podwajania i dodawania (Double-and-Add)** – Optymalna metoda mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Wykorzystuje binarną reprezentację `k`, iteracyjnie podwajając i dodając punkty.
+- **Walidacja danych** - Algorytmy realizujące wyznaczanie i walidację kluczy w protokole wymiany klucza ECDH.
 
-- Algorytm obliczający pierwiastek modularny z liczby (`a` mod `p`), jeżeli istnieje. Wykorzystuje symbol Legendre'a, by sprawdzić, czy pierwiastek istnieje. W szczególnych przypadkach, takich jak (`p` ≡ `3` mod `4`), stosuje uproszczone formuły. Dla bardziej ogólnych przypadków wykorzystuje algorytm Tonellego–Shanksa. Stosowany do poszukiwania punktów na krzywej.
+##### Dane:
 
-- Algorytm sprawdzający, czy podany punkt należy do krzywej.
+- **Parametry krzywej:**
 
-- Algorytm znajdujący najbliższą większą liczbę pierwszą od `n` przy użyciu testu Millera-Rabina. Sprawdza kolejne liczby (`n+1`, `n+2`, `...`) aż znajdzie pierwszą liczbę pierwszą.
+  - **Moduł `p`:** Liczba pierwsza definiująca pole skończone.
+  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+  - **Generator (`X`, `Y`):** Punkt bazowy krzywej.
 
-- Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+- **Opcje klucza prywatnego:**
 
-- Algorytm metody podwajania i dodawania (ang. _Double-and-Add_) do obliczania mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Przekształca `k` na postać binarną i iteracyjnie podwaja/dodaje punkt.
+  - **Klucz prywatny `A`:** Losowo wybrana liczba całkowita.
+  - **Nazwy standardowych krzywych:** Możliwość wyboru predefiniowanej krzywej, np. „NIST256p” lub „NIST384p”.
 
-- Algorytmy związane z wyliczaniem i walidacją ECDH.
+##### Walidacja poprawności danych:
+
+Podczas ręcznego wprowadzania danych, system weryfikuje:
+
+1. Czy wszystkie wymagane dane zostały podane.
+2. Czy liczba `p` jest liczbą pierwszą.
+3. Czy liczba `a` zawiera się w przedziale (`1` < `a` < `p`).
+4. Czy liczba `b` zawiera się w przedziale (`1` < `b` < `p`).
+5. Czy punkt o podanych współrzędnych (`X`, `Y`) należy do krzywej o rónaniu `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+6. Czy liczba `A` zawiera się w przedziale (`1` < `A` < `p`).
 
 ### Opis zmiennych
 
@@ -35,19 +53,38 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 
 ## Generowanie klucza sesji ECDH
 
-Poniżej znajduje się opis funkcji, ich zastosowania oraz wykorzystywanych algorytmów.
+##### Algorytmy:
 
-### Wykorzystane algorytmy:
+- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a` mod `p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p` ≡ `3` mod `4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
+- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt (`x`, `y`) spełnia równanie krzywej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+- **Test Millera-Rabina** – probabilistyczny test pierwszości.
+- **Rozszerzony algorytm Euklidesa** – wyznaczanie największego wspólnego dzielnika dwóch liczb naturalnych (wykorzystywany do odnajdywanie odwrotności modularnej).
+- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+- **Metoda podwajania i dodawania (Double-and-Add)** – Optymalna metoda mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Wykorzystuje binarną reprezentację `k`, iteracyjnie podwajając i dodając punkty.
+- **Walidacja danych** - Algorytmy realizujące wyznaczanie i walidację kluczy w protokole wymiany klucza ECDH.
 
-- Algorytm sprawdzający, czy podany punkt należy do krzywej.
+##### Dane:
 
-- Algorytm sprawdzający, czy podana liczba jest pierwsza z wykorzystaniem testu Millera-Rabina.
+- **Parametry krzywej:**
 
-- Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+  - **Moduł `p`:** Liczba pierwsza definiująca pole skończone.
+  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+  - **Klucz publiczny (`X`, `Y`):** Punkt krzywej.
 
-- Algorytm metody podwajania i dodawania (ang. _Double-and-Add_) do obliczania mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Przekształca `k` na postać binarną i iteracyjnie podwaja/dodaje punkt.
+- **Opcje klucza prywatnego:**
 
-- Algorytmy związane z wyliczaniem i walidacją ECDH.
+  - **Klucz prywatny `A`:** Wygenerowany wcześniej klucz prywatny.
+
+##### Walidacja poprawności danych:
+
+Podczas ręcznego wprowadzania danych, system weryfikuje:
+
+1. Czy wszystkie wymagane dane zostały podane.
+2. Czy liczba `p` jest liczbą pierwszą.
+3. Czy liczba `a` zawiera się w przedziale (`1` < `a` < `p`).
+4. Czy liczba `b` zawiera się w przedziale (`1` < `b` < `p`).
+5. Czy punkt o podanych współrzędnych (`X`, `Y`) należy do krzywej o rónaniu `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+6. Czy liczba `A` zawiera się w przedziale (`1` < `A` < `p`).
 
 ### Opis zmiennych
 
