@@ -186,12 +186,17 @@ class RSAEncryptView(TemplateView):
         e = form_en.cleaned_data['e']
         msg = form_en.cleaned_data['Wiadomość']
         if n == None or e == None or msg == "":
-          form_en.add_error(None, "Pola nie mogą być puste")
+          form_en.add_error(None, "Pola nie mogą być puste.")
         elif n == 0:
           form_en.add_error(None, "Właśnie podzieliłeś przez zero >:(")
+        elif n < 256:
+          form_en.add_error(None, "n nie może być mniejsze od 256. Zweryfikuj poprawność klucza.")
         else:
           encrypted = rsa_encrypt_message(msg,n,e)
-          text_en="Zaszyfrowana wiadomość (w formacie base64): " + encrypted
+          if encrypted == -1:
+            form_en.add_error(None, "Właśnie podzieliłeś przez zero >:(")
+          else:
+            text_en="Zaszyfrowana wiadomość (w formacie base64): " + encrypted
     elif "reset" in request.POST:
       form_en = RSAEncryptForm() 
 
@@ -222,7 +227,9 @@ class RSADecryptView(TemplateView):
         else:
           decrypted = rsa_decrypt_message(msg,p,q,d)
           if decrypted == -1:
-            form_dec.add_error(None, "Błąd odszyfrowywania. Wartości klucza są błędne lub wiadomość jest uszkodzona.")
+            form_dec.add_error(None, "Podana zaszyfrowana wiadomość jest uszkodzona. Upewnij się czy została poprawnie wprowadzona.")
+          elif decrypted == -2:
+            form_dec.add_error(None, "Błąd odszyfrowywania. Składowe klucza są błędne lub wiadomość została błędnie zaszyfrowana.")
           else:
             text_dec="Odszyfrowana wiadomość: " + decrypted
     elif "reset" in request.POST:

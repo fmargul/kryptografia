@@ -3,7 +3,8 @@ import time
 from .constants import BLOCK_SIZE
 import base64
 import json
-from binascii import Error
+from binascii import Error as BinAsciiError
+from json.decoder import JSONDecodeError
 from math import log2, floor
 class PublicKey:
   def __init__(self, e, n):
@@ -75,6 +76,8 @@ def validate_p_q(p,q):
     return False, f"p nie jest liczbą pierwszą!"
   elif not is_prime_by_probability(q, 50):
     return False, f"q nie jest liczbą pierwszą!"
+  elif p*q < 256:
+    return False, f"Iloczyn liczb p i q musi wynosić co najmniej 256. Mniejsza wartość nie pozwoli na zaszyfrowanie wiadomości."
   else:
     return True, f"git"
 
@@ -140,14 +143,17 @@ def chinese_remainder_theorem_decryption(m, p, q, dp, dq):
 def rsa_encrypt_message(text, n,e):
   print("Encrypting text '" + text + "'...")
   #block_size = len(bin(n)[2:])
-  block_size = floor(log2(n) / 8) 
+  block_size = floor(log2(n) / 8)
+
   #pub_key = get_pub_key_from_data(p,q,e)
 
   blocks_encr_RSA = []
   numbers_to_encrypt = convert_text_to_numbers(text, block_size)
   for block in numbers_to_encrypt:
+      print(block)
       blocks_encr_RSA.append(modular_exponentiation(block, e, n))
 
+  
   json_data = json.dumps(blocks_encr_RSA)
   json_bytes = json_data.encode('utf-8')
   base64_encoded = base64.b64encode(json_bytes)
@@ -161,7 +167,11 @@ def rsa_decrypt_message(b64, p,q,d):
     json_bytes = base64.b64decode(b64)
     json_data = json_bytes.decode('utf-8')
     blocks_encr_RSA = json.loads(json_data)
-  except Error:
+  except BinAsciiError:
+    return -1
+  except JSONDecodeError:
+    return -1
+  except UnicodeDecodeError:
     return -1
 
   blocks_decr_RSA = []
@@ -175,7 +185,7 @@ def rsa_decrypt_message(b64, p,q,d):
   try:
     decrypted_text = convert_numbers_to_text(blocks_decr_RSA)
   except UnicodeDecodeError:
-    return -1
+    return -2
   
   print("Recovered text:", decrypted_text,"\n")
   return decrypted_text
