@@ -148,7 +148,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 
 ---
 
-#### Generowanie par kluczy RSA
+## Generowanie par kluczy RSA
 
 ##### Algorytmy:
 
@@ -189,7 +189,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 
 ---
 
-#### Szyfrowanie wiadomości przy użyciu RSA
+## Szyfrowanie wiadomości przy użyciu RSA
 
 ##### Algorytmy:
 
@@ -225,7 +225,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 
 ---
 
-#### Deszyfrowanie wiadomości przy użyciu RSA
+## Deszyfrowanie wiadomości przy użyciu RSA
 
 ##### Algorytmy:
 
