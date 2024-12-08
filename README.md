@@ -123,6 +123,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
   - Liczby `p` i `g` oraz klucze prywatne i publiczne muszą być spójne z wcześniejszymi danymi.
 
 - **Opcje użytkownika:**
+
   - **Ręczne wprowadzanie danych:** Użytkownik może podać liczby `p`, `g`, klucz publiczny partnera i swój klucz prywatny, aby obliczyć wspólny sekret.
   - **Automatyczne generowanie danych:** System może automatycznie wygenerować dane, takie jak liczby `p`, `g`, klucz publiczny partnera i klucz prywatny.
 
@@ -163,6 +164,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
   - **Współczynnik klucza publicznego `e`:** generowany o długości **N-1 bitów**, gdzie **N** to długość bitowa wartości `φ(n)`, czyli tocjenta iloczynu liczb `p` i `q`.
 
 - **Opcje użytkownika:**
+
   - **Ręczne wprowadzanie danych:** Użytkownik może podać własne wartości liczb `p`, `q` oraz `e`. Dane są walidowane pod kątem poprawności.
   - **Automatyczne generowanie danych:** Wartości `p`, `q` oraz `e` mogą zostać wygenerowane automatycznie.
 
