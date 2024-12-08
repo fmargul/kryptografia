@@ -202,6 +202,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 ##### Dane:
 
 - **Opcje użytkownika:**
+
   - **Wprowadzanie składowych klucza publicznego:** Użytkownik podaje wartości składowych `e` oraz `n`.
   - **Wprowadzenie wiadomości do zaszyfrowania:** Użytkownik wprowadza wiadomość.
 
@@ -240,6 +241,7 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 ##### Dane:
 
 - **Opcje użytkownika:**
+
   - **Wprowadzanie składowych klucza prywatnego:** Użytkownik podaje wartości składowych `d`, `p` oraz `q`.
   - **Wprowadzenie wiadomości do odszyfrowania:** Użytkownik wprowadza zaszyfrowaną wiadomość.
 
