@@ -1,6 +1,13 @@
-{% extends "base.html" %} 
-{% load static %}
-{% block content %}
-<h1>Porównanie szybkości deszyfrowania z użyciem Chińskiego Twierdzenia o Resztach oraz bez</h1>
-<center><img class = "ecdh" src="{% static 'myapp/images/curve_crt.svg' %}"></center>
+{% extends "base.html" %} {% load static %} {% block content %}
+<h1>
+  Porównanie szybkości deszyfrowania z użyciem Chińskiego Twierdzenia o Resztach
+  oraz bez
+</h1>
+<h2>
+  p i q: losowe, e=65537, długość szyfrowanej wiadomości: 574 znaki, rozmiar
+  bloku: 8 bajtów
+</h2>
+<center>
+  <img class="ecdh" src="{% static 'myapp/images/curve_crt.svg' %}" />
+</center>
 {% endblock %}
