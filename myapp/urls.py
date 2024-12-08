@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('multiply_points/', views.multiply_points, name='multiply_points'),
     path('crt/', views.crt, name='crt'),
+    path('modular_exponentiation/', views.modular_exponentiation, name='modular_exponentiation'),
     path('ecdh_shared/', EcdhSharedView.as_view(), name='ecdh_shared'),
     path('ecdh_public/', EcdhPublicView.as_view(), name='ecdh_public'),
     path('rsa_keys/', RSAKeysView.as_view(), name='rsa_keys'),

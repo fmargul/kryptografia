@@ -17,6 +17,9 @@ def multiply_points(request):
 def crt(request):
   return render(request, "crt.html")
 
+def modular_exponentiation(request):
+  return render(request, "modular_exponentiation.html")
+
 class EcdhSharedView(TemplateView):
   template_name = 'ecdh_shared.html'
 
