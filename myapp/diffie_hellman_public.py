@@ -50,15 +50,19 @@ def find_prime_by_probability(n, accuracy):
     
 # Warunek p = 2q + 1
 def generate_safe_prime(bits, accuracy):
-    # q - liczba pierwsza
-    q = find_prime_by_probability(2**(bits - 1), accuracy)
+    # Losowe rozpoczęcie poszukiwań liczby q
+    start = random.randint(2**(bits - 1), 2**bits - 1)
+    q = find_prime_by_probability(start, accuracy)
 
     p = 2 * q + 1
-    
+
     # Sprawdzenie, czy p jest liczbą pierwszą
     while not is_prime_by_probability(p, accuracy):
-        q = find_prime_by_probability(q + 1, accuracy)
-        p = 2 * q + 1      
+        # Losowanie kolejnego q
+        start = random.randint(2**(bits - 1), 2**bits - 1)
+        q = find_prime_by_probability(start, accuracy)
+        p = 2 * q + 1
+    
     return p
 
 # Generowanie generatora (g)
