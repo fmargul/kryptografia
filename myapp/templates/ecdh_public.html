@@ -53,38 +53,47 @@
         <tbody>
             <tr>
                 <td><strong>Liczba pierwsza (p)</strong></td>
-                <td>{{ result.p }}</td>
+                <td class="large-number">{{ result.p }}</td>
             </tr>
             <tr>
                 <td><strong>Współrzędna krzywej (a)</strong></td>
-                <td>{{ result.a }}</td>
+                <td class="large-number">{{ result.a }}</td>
             </tr>
             <tr>
                 <td><strong>Współrzędna krzywej (b)</strong></td>
-                <td>{{ result.b }}</td>
+                <td class="large-number">{{ result.b }}</td>
             </tr>
             <tr>
                 <td><strong>Pierwsza współrzędna generatora (X)</strong></td>
-                <td>{{ result.gx }}</td>
+                <td class="large-number">{{ result.gx }}</td>
             </tr>
             <tr>
                 <td><strong>Druga współrzędna generatora (Y)</strong></td>
-                <td>{{ result.gy }}</td>
+                <td class="large-number">{{ result.gy }}</td>
             </tr>
             <tr>
                 <td><strong>Klucz prywatny (A)</strong></td>
-                <td>{{ result.A }}</td>
+                <td class="large-number">{{ result.A }}</td>
             </tr>
             <tr>
                 <td><strong>Pierwsza współrzędna klucza publicznego (X)</strong></td>
-                <td>{{ result.cx }}</td>
+                <td class="large-number">{{ result.cx }}</td>
             </tr>
             <tr>
                 <td><strong>Druga współrzędna klucza publicznego (Y)</strong></td>
-                <td>{{ result.cy }}</td>
+                <td class="large-number">{{ result.cy }}</td>
             </tr>
         </tbody>
     </table>
 {% endif %}
+
+<style>
+    .large-number {
+        word-wrap: break-word;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-width: 100%;
+    }
+</style>
 
 {% endblock %}
