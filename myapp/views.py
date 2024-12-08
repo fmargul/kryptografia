@@ -20,6 +20,9 @@ def crt(request):
 def modular_exponentiation(request):
   return render(request, "modular_exponentiation.html")
 
+def exp(request):
+  return render(request, "exp.html")
+
 class EcdhSharedView(TemplateView):
   template_name = 'ecdh_shared.html'
 
