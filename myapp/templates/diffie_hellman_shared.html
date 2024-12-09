@@ -31,9 +31,6 @@
     {% endfor %}
 
     <div style="display: flex; gap: 10px; justify-content: center;">
-        <button type="submit" name="generate" style="padding: 10px 20px; background-color: #7dbb97; color: white; border: none; border-radius: 4px;">
-            Generuj dane
-        </button>
         <button type="submit" name="validate" style="padding: 10px 20px; background-color: #6aa8bd; color: white; border: none; border-radius: 4px;">
             Waliduj/Oblicz
         </button>
@@ -58,19 +55,15 @@
                 <td class="large-number">{{ result.p }}</td>
             </tr>
             <tr>
-                <td><strong>Generator (g)</strong></td>
-                <td class="large-number">{{ result.g }}</td>
-            </tr>
-            <tr>
                 <td><strong>Klucz publiczny drugiej strony</strong></td>
-                <td class="large-number">{{ result.partners_public_key }}</td>
+                <td class="large-number">{{ result.other_public_key }}</td>
             </tr>
             <tr>
                 <td><strong>Twój klucz prywatny</strong></td>
                 <td class="large-number">{{ result.private_key }}</td>
             </tr>
             <tr>
-                <td><strong>Wspólny sekret</strong></td>
+                <td><strong><span style="color: #7dbb97; font-weight: bold;">Wspólny sekret</span></strong></td>
                 <td class="large-number">{{ result.shared_secret }}</td>
             </tr>
         </tbody>

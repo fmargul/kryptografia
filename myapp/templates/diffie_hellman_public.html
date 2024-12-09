@@ -16,18 +16,29 @@
 <form method="post" style="max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; background-color: #f9f9f9;">
     {% csrf_token %}
 
+    <div class="form-field" style="margin-bottom: 15px;">
+        <label for="id_p_choice" style="font-weight: bold; display: block; margin-bottom: 5px; text-align: center;">
+            Wybierz liczbę pierwszą (p) z listy
+        </label>
+        {{ form.p_choice }}
+    </div>
+
     {% for field in form %}
-        <div class="form-field" style="margin-bottom: 15px;">
-            <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px; text-align: center;">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <ul class="errorlist" style="color: red; padding-left: 20px; list-style-type: none;">
-                    {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
+        {% if field.name != "p_choice" %}
+            <div class="form-field" style="margin-bottom: 15px;">
+                <label for="{{ field.id_for_label }}" style="font-weight: bold; display: block; margin-bottom: 5px; text-align: center;">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="errorlist" style="color: red; padding-left: 20px; list-style-type: none;">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endfor %}
 
     <div style="display: flex; gap: 10px; justify-content: center;">
@@ -66,8 +77,12 @@
                 <td class="large-number">{{ result.private_key }}</td>
             </tr>
             <tr>
-                <td><strong>Twój klucz publiczny</strong></td>
+                <td><strong><span style="color: #7dbb97; font-weight: bold;">Twój klucz publiczny</span></strong></td>
                 <td class="large-number">{{ result.public_key }}</td>
+            </tr>
+            <tr>
+                <td><strong><span style="color: red; font-weight: bold;">DODATKOWO</span><br> Klucz publiczny drugiej strony - na potrzeby dalszych testów</strong></td>
+                <td class="large-number">{{ result.other_public_key }}</td>
             </tr>
         </tbody>
     </table>

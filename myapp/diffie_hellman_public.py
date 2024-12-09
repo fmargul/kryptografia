@@ -78,15 +78,20 @@ def generate_private_key(p):
 
 # Obliczenie klucza publicznego
 def calculate_public_key(g, private_key, p):
+    p = int(p)
     return modular_exponentiation(g, private_key, p)
 
 # Walidacja danych
-def validate_dh_data_public(p, g, private_key=None):
+def validate_dh_data_public(p, g, private_key=None):    
     if p is None or g is None or private_key is None:
         return False, "Wszystkie pola formularza muszą być uzupełnione!"
     
-    if not isinstance(p, int) or not isinstance(g, int):
-        return False, "Liczby p i g muszą być liczbami całkowitymi!"
+    try:
+        p = int(p)
+        g = int(g)
+        private_key = int(private_key)
+    except ValueError:
+        return False, "Liczby p, g i klucz prywatny muszą być liczbami całkowitymi!"
     
     if not is_prime_by_probability(p, 50):
         return False, "Liczba p musi być liczbą pierwszą!"
