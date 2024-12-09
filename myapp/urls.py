@@ -5,6 +5,7 @@ from myapp.views import EcdhPublicView, EcdhSharedView, RSAKeysView, RSAEncryptV
 urlpatterns = [
     path('', views.home, name='home'),
     path('multiply_points/', views.multiply_points, name='multiply_points'),
+    path('prime_algorithms_comparison/', views.prime_algorithms_comparison, name='prime_algorithms_comparison'),
     path('crt/', views.crt, name='crt'),
     path('exponentiation/', views.exponentiation, name='exponentiation'),
     path('ecdh_shared/', EcdhSharedView.as_view(), name='ecdh_shared'),

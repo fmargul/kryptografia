@@ -14,6 +14,9 @@ def home(request):
 def multiply_points(request):
   return render(request, "multiply_points.html")
 
+def prime_algorithms_comparison(request):
+      return render(request, "prime_algorithms_comparison.html" )
+
 def crt(request):
   return render(request, "crt.html")
 
