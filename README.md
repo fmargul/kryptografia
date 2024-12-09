@@ -252,17 +252,17 @@ Implementacja probabilistycznego testu pierwszości oparta na algorytmie Millera
 ##### Działanie funkcji:
 
 1. Obsługuje przypadki brzegowe:
-   - Jeśli \( n \leq 1 \), zwraca `False`.
-   - Jeśli \( n \) wynosi 2 lub 3, zwraca `True`.
-   - Jeśli \( n \) jest parzysta, zwraca `False`.
-2. Znajduje rozkład \( n - 1 \) w postaci \( 2^s \cdot d \), gdzie \( d \) jest liczbą nieparzystą:
-   - Iteracyjnie dzieli \( n - 1 \) przez 2, zwiększając \( s \), aż do uzyskania \( d \).
+   - Jeśli `n` ≤ `1`, zwraca `False`.
+   - Jeśli `n` wynosi 2 lub 3, zwraca `True`.
+   - Jeśli `n` jest parzysta, zwraca `False`.
+2. Znajduje rozkład `n - 1` w postaci `2^s` \cdot d`, gdzie `d` jest liczbą nieparzystą:
+   - Iteracyjnie dzieli `n - 1` przez `2`, zwiększając `s`, aż do uzyskania `d`.
 3. Wykonuje `accuracy` prób losowych:
-   - Losuje bazę \( a \) z przedziału \([2, n - 2]\).
-   - Oblicza \( x = a^d \mod n \).
-   - Jeśli \( x \) wynosi 1 lub \( n - 1 \), próba kończy się sukcesem i algorytm przechodzi do kolejnej próby.
-   - W przeciwnym razie wykonuje \( s - 1 \) kolejnych potęgowań modularnych \( x^{2^r} \mod n \), aby sprawdzić, czy \( x \) osiąga wartość \( n - 1 \).
-   - Jeśli w żadnym kroku \( x \) nie osiągnie \( n - 1 \), liczba \( n \) jest uznawana za złożoną, a funkcja zwraca `False`.
+   - Losuje bazę `a` z przedziału [`2`, `n - 2`].
+   - Oblicza `x` = `a^d` mod `n`.
+   - Jeśli `x` wynosi `1` lub `n - 1`, próba kończy się sukcesem i algorytm przechodzi do kolejnej próby.
+   - W przeciwnym razie wykonuje `s - 1` kolejnych potęgowań modularnych `x^2^r` mod `n`, aby sprawdzić, czy `x` osiąga wartość `n - 1`.
+   - Jeśli w żadnym kroku `x` nie osiągnie `n - 1`, liczba `n` jest uznawana za złożoną, a funkcja zwraca `False`.
 4. Jeśli wszystkie próby zakończą się sukcesem, liczba jest uznawana za prawdopodobnie pierwszą i funkcja zwraca `True`.
 
 ##### Złożoność obliczeniowa:
