@@ -238,7 +238,7 @@ Implementacja szybkiego potęgowania modularnego pozwalająca efektywnie obliczy
 
 #### Funkcja: `is_prime_by_probability`
 
-Implementacja probabilistycznego testu pierwszości oparta na algorytmie Millera-Rabina. Funkcja ocenia, czy dana liczba \( n \) jest prawdopodobnie pierwsza, z uwzględnieniem zadanego poziomu dokładności.
+Implementacja probabilistycznego testu pierwszości oparta na algorytmie Millera-Rabina. Funkcja ocenia, czy dana liczba `n` jest prawdopodobnie pierwsza, z uwzględnieniem zadanego poziomu dokładności.
 
 ##### Parametry wejściowe:
 
@@ -255,7 +255,7 @@ Implementacja probabilistycznego testu pierwszości oparta na algorytmie Millera
    - Jeśli `n` ≤ `1`, zwraca `False`.
    - Jeśli `n` wynosi 2 lub 3, zwraca `True`.
    - Jeśli `n` jest parzysta, zwraca `False`.
-2. Znajduje rozkład `n - 1` w postaci `2^s` \cdot d`, gdzie `d` jest liczbą nieparzystą:
+2. Znajduje rozkład `n - 1` w postaci `2^s` ⋅ `d`, gdzie `d` jest liczbą nieparzystą:
    - Iteracyjnie dzieli `n - 1` przez `2`, zwiększając `s`, aż do uzyskania `d`.
 3. Wykonuje `accuracy` prób losowych:
    - Losuje bazę `a` z przedziału [`2`, `n - 2`].
