@@ -43,8 +43,8 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 | Zmienna  | Typ   | Opis                                                                                                                       |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------------------- |
 | `p`      | `int` | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone).                                                    |
-| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                 |
-| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                 |
+| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                           |
+| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                           |
 | `X`, `Y` | `int` | Współrzędne generatora na krzywej eliptycznej.                                                                             |
 | `A`      | `int` | Prywatny klucz użytkownika (losowa liczba).                                                                                |
 | `curve`  | `str` | Nazwa standardowej krzywej eliptycznej, np. "NIST256p", "NIST384p" za pomocą której można wygenerować dane do kalkulatora. |
@@ -90,13 +90,13 @@ Podczas ręcznego wprowadzania danych, system weryfikuje:
 
 Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulator.
 
-| Zmienna  | Typ   | Opis                                                                     |
-| -------- | ----- | ------------------------------------------------------------------------ |
-| `p`      | `int` | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone).  |
-| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`. |
-| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`. |
-| `X`, `Y` | `int` | Współrzędne oytzymanego klucza publicznego na krzywej eliptycznej.       |
-| `A`      | `int` | Prywatny klucz użytkownika (losowa liczba).                              |
+| Zmienna  | Typ   | Opis                                                                    |
+| -------- | ----- | ----------------------------------------------------------------------- |
+| `p`      | `int` | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone). |
+| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.        |
+| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.        |
+| `X`, `Y` | `int` | Współrzędne oytzymanego klucza publicznego na krzywej eliptycznej.      |
+| `A`      | `int` | Prywatny klucz użytkownika (losowa liczba).                             |
 
 ---
 
@@ -149,13 +149,13 @@ Podczas generowania danych automatycznie obliczane są następujące wartości:
 
 ##### Opis zmiennych:
 
-| Zmienna       | Typ   | Opis                                                    |
-| ------------- | ----- | ------------------------------------------------------- |
-| `p`           | `int` | Liczba pierwsza definiująca grupę modulo.               |
-| `g`           | `int` | Generator grupy modulo `p`.                             |
-| `private_key` | `int` | Klucz prywatny użytkownika, losowana liczba `[1, p-2]`. |
-| `public_key`  | `int` | Klucz publiczny obliczony z `p`, `g` i `private_key`.   |
-| `other_public_key` | `int` | Losowy klucz publiczny drugiej strony.             |
+| Zmienna            | Typ   | Opis                                                    |
+| ------------------ | ----- | ------------------------------------------------------- |
+| `p`                | `int` | Liczba pierwsza definiująca grupę modulo.               |
+| `g`                | `int` | Generator grupy modulo `p`.                             |
+| `private_key`      | `int` | Klucz prywatny użytkownika, losowana liczba `[1, p-2]`. |
+| `public_key`       | `int` | Klucz publiczny obliczony z `p`, `g` i `private_key`.   |
+| `other_public_key` | `int` | Losowy klucz publiczny drugiej strony.                  |
 
 ---
 
@@ -387,5 +387,52 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 | `q` | `int` | Druga składowa iloczynu `n` |
 | `msg` | `string` | Treść wiadomości do odszyfrowania |
 | `decrypted` | `string` | Odszyfrowana wiadomość |
+
+---
+
+## Dokumentacja funkcji deszyfrującej wykorzystującej chińskie twierdzenie o resztach
+
+#### Funkcja: `chinese_remainder_theorem_decryption`
+
+Implementacja deszyfrowania przy użyciu chińskiego twierdzenia o resztach, według którego dla dowolnych parami względnie pierwszych liczb naturalnych _n<sub>1</sub>_,_n<sub>2</sub>_,...,_n<sub>k</sub>_ oraz dowolnych liczb całkowitych _y<sub>1</sub>_,_y<sub>2</sub>_,...,_y<sub>k</sub>_ istnije liczba całkowita _x<sub></sub>_, spełniająca układ kongruencji
+
+_x ≡ a<sub>1</sub> (mod m<sub>1</sub>)_
+
+_x ≡ a<sub>2</sub> (mod m<sub>2</sub>)_
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⋮
+
+_x ≡ a<sub>k</sub> (mod m<sub>k</sub>)_
+
+##### Parametry wejściowe:
+
+- **`m`** (`int`): Blok wiadomości do odszyfrowania.
+- **`p`** (`int`): Składowa `p` klucza prywatnego.
+- **`q`** (`int`): Składowa `q` klucza prywatnego.
+- **`d`** (`int`): Współczynnik `d` klucza prywatnego.
+
+##### Zwracana wartość:
+
+- **`msg`** (`int`): Odszyfrowany blok wiadomości
+
+##### Działanie funkcji:
+
+1. Obliczenie wartości `dp` oraz `dq`, gdzie:
+   - `dp = d (mod p-1)`.
+   - `dq = d (mod q-1)`.
+   - Wykładniki te pozwalają zmniejszyć ilość obliczeń w modularnej potędze, co przyspiesza deszyfrowanie
+2. Obliczenie częściowych wyników deszyfrowania `m1` i `m2`, gdzie:
+   - `m1 = m^dp mod(p)`.
+   - `m1 = m^dq mod(q)`.
+3. Znalezienie odwrotności modularnej liczby `q` w modulo `p`, jako `q_inv`.
+4. Wyliczenie odszyfrowanego bloku ze wzoru:
+   - `msg = m2 + h * q`, gdzie:
+     - `h = (q_inv * (m1-m2)) (mod p)`.
+5. Zwrócenie odszyfrowanego bloku.
+
+##### Złożoność obliczeniowa:
+
+- **Czasowa**: `O(k^3)`.
+- **Pamięciowa**: `O(k)`.
 
 ---

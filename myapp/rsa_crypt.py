@@ -132,13 +132,15 @@ def get_priv_key_from_data(p,q,e):
   d = rsa_get_private_exponent(e, (p-1)*(q-1))
   return PrivateKey(d,p,q)
 
-def chinese_remainder_theorem_decryption(m, p, q, dp, dq):
+def chinese_remainder_theorem_decryption(m, p, q, d):
+  dp = modular_exponentiation(d,1,p-1)
+  dq = modular_exponentiation(d,1,q-1)
   m1 = modular_exponentiation(m,dp,p)
   m2 = modular_exponentiation(m,dq,q)
   q_inv = rsa_get_private_exponent(q,p) #this function performs modular inversion
   h = (q_inv * (m1 - m2)) % p
-  m = m2 + h * q
-  return m
+  msg = m2 + h * q
+  return msg
 
 def rsa_encrypt_message(text, n,e):
   print("Encrypting text '" + text + "'...")
@@ -177,7 +179,7 @@ def rsa_decrypt_message(b64, p,q,d):
   blocks_decr_RSA = []
   print("Decrypting...")
   for block in blocks_encr_RSA:
-      blocks_decr_RSA.append(chinese_remainder_theorem_decryption(block,p,q,modular_exponentiation(d,1,p-1),modular_exponentiation(d,1,q-1)))
+      blocks_decr_RSA.append(chinese_remainder_theorem_decryption(block,p,q,d))
       #blocks_decr_RSA.append(modular_exponentiation(block,d,(p*q)))
       
   print("Decrypted blocks: ", blocks_decr_RSA,"\n")
