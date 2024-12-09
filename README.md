@@ -4,11 +4,11 @@
 
 ##### Algorytmy:
 
-- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a` mod `p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p` ≡ `3` mod `4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
-- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt (`x`, `y`) spełnia równanie krzywej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a mod p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p ≡ 3 mod 4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
+- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt `(x, y)` spełnia równanie krzywej `y^2 ≡ x^3 + ax + b mod p`.
 - **Znajdowanie najbliższej liczby pierwszej** – Algorytm szuka pierwszej liczby pierwszej większej od `n`, korzystając z testu pierwszości Millera-Rabina.
 - **Rozszerzony algorytm Euklidesa** – wyznaczanie największego wspólnego dzielnika dwóch liczb naturalnych (wykorzystywany do odnajdywanie odwrotności modularnej).
-- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P = Q` stosuje inne wzory niż dla `P ≠ Q` i wylicza nowe współrzędne punktu `R = P + Q`).
 - **Metoda podwajania i dodawania (Double-and-Add)** – Optymalna metoda mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Wykorzystuje binarną reprezentację `k`, iteracyjnie podwajając i dodając punkty.
 - **Walidacja danych** - Algorytmy realizujące wyznaczanie i walidację kluczy w protokole wymiany klucza ECDH.
 
@@ -17,8 +17,8 @@
 - **Parametry krzywej:**
 
   - **Moduł `p`:** Liczba pierwsza definiująca pole skończone.
-  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
-  - **Generator (`X`, `Y`):** Punkt bazowy krzywej.
+  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.
+  - **Generator `(X, Y)`:** Punkt bazowy krzywej.
 
 - **Opcje klucza prywatnego:**
 
@@ -31,10 +31,10 @@ Podczas ręcznego wprowadzania danych, system weryfikuje:
 
 1. Czy wszystkie wymagane dane zostały podane.
 2. Czy liczba `p` jest liczbą pierwszą.
-3. Czy liczba `a` zawiera się w przedziale (`1` < `a` < `p`).
-4. Czy liczba `b` zawiera się w przedziale (`1` < `b` < `p`).
-5. Czy punkt o podanych współrzędnych (`X`, `Y`) należy do krzywej o rónaniu `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
-6. Czy liczba `A` zawiera się w przedziale (`1` < `A` < `p`).
+3. Czy liczba `a` zawiera się w przedziale `1 < a < p`.
+4. Czy liczba `b` zawiera się w przedziale `1 < b < p`.
+5. Czy punkt o podanych współrzędnych `(X, Y)` należy do krzywej o rónaniu `y^2 ≡ x^3 + ax + b mod p`.
+6. Czy liczba `A` zawiera się w przedziale `1 < A < p`.
 
 ### Opis zmiennych
 
@@ -43,8 +43,8 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 | Zmienna  | Typ   | Opis                                                                                                                       |
 | -------- | ----- | -------------------------------------------------------------------------------------------------------------------------- |
 | `p`      | `int` | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone).                                                    |
-| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.                                                   |
-| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.                                                   |
+| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                 |
+| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.                                                 |
 | `X`, `Y` | `int` | Współrzędne generatora na krzywej eliptycznej.                                                                             |
 | `A`      | `int` | Prywatny klucz użytkownika (losowa liczba).                                                                                |
 | `curve`  | `str` | Nazwa standardowej krzywej eliptycznej, np. "NIST256p", "NIST384p" za pomocą której można wygenerować dane do kalkulatora. |
@@ -55,11 +55,11 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 
 ##### Algorytmy:
 
-- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a` mod `p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p` ≡ `3` mod `4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
-- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt (`x`, `y`) spełnia równanie krzywej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
+- **Obliczanie pierwiastka modularnego** – Algorytm oblicza pierwiastek modularny z liczby `a mod p`, jeśli istnieje. Sprawdza istnienie pierwiastka przy użyciu symbolu Legendre’a, a dla specjalnych przypadków `p ≡ 3 mod 4` stosuje uproszczone formuły. W pozostałych przypadkach wykorzystuje algorytm Tonellego–Shanksa. Wykorzystywany m.in. do znajdowania punktów na krzywej eliptycznej.
+- **Sprawdzanie przynależności punktu do krzywej** – Algorytm weryfikuje, czy podany punkt `(x, y)` spełnia równanie krzywej `y^2 ≡ x^3 + ax + b mod p`.
 - **Test Millera-Rabina** – probabilistyczny test pierwszości.
 - **Rozszerzony algorytm Euklidesa** – wyznaczanie największego wspólnego dzielnika dwóch liczb naturalnych (wykorzystywany do odnajdywanie odwrotności modularnej).
-- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P` = `Q` stosuje inne wzory niż dla `P` ≠ `Q` i wylicza nowe współrzędne punktu `R` = `P` + `Q`).
+- **Dodawanie punktów na krzywej eliptycznej** – Algorytm dodający dwa punkty `P` i `Q` na krzywej eliptycznej. Oblicza współczynnik nachylenia `s` (dla `P = Q` stosuje inne wzory niż dla `P ≠ Q` i wylicza nowe współrzędne punktu `R = P + Q`).
 - **Metoda podwajania i dodawania (Double-and-Add)** – Optymalna metoda mnożenia punktu `G` przez skalar `k` na krzywej eliptycznej. Wykorzystuje binarną reprezentację `k`, iteracyjnie podwajając i dodając punkty.
 - **Walidacja danych** - Algorytmy realizujące wyznaczanie i walidację kluczy w protokole wymiany klucza ECDH.
 
@@ -68,8 +68,8 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 - **Parametry krzywej:**
 
   - **Moduł `p`:** Liczba pierwsza definiująca pole skończone.
-  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
-  - **Klucz publiczny (`X`, `Y`):** Punkt krzywej.
+  - **Współczynniki `a` i `b`:** Parametry równania krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`.
+  - **Klucz publiczny `(X, Y)`:** Punkt krzywej.
 
 - **Opcje klucza prywatnego:**
 
@@ -81,10 +81,10 @@ Podczas ręcznego wprowadzania danych, system weryfikuje:
 
 1. Czy wszystkie wymagane dane zostały podane.
 2. Czy liczba `p` jest liczbą pierwszą.
-3. Czy liczba `a` zawiera się w przedziale (`1` < `a` < `p`).
-4. Czy liczba `b` zawiera się w przedziale (`1` < `b` < `p`).
-5. Czy punkt o podanych współrzędnych (`X`, `Y`) należy do krzywej o rónaniu `y^2` ≡ `x^3` + `ax` + `b` mod `p`.
-6. Czy liczba `A` zawiera się w przedziale (`1` < `A` < `p`).
+3. Czy liczba `a` zawiera się w przedziale `1 < a < p`.
+4. Czy liczba `b` zawiera się w przedziale `1 < b < p`.
+5. Czy punkt o podanych współrzędnych `(X, Y)` należy do krzywej o rónaniu `y^2 ≡ x^3 + ax + b mod p`.
+6. Czy liczba `A` zawiera się w przedziale `1 < A < p`.
 
 ### Opis zmiennych
 
@@ -93,8 +93,8 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 | Zmienna  | Typ   | Opis                                                                     |
 | -------- | ----- | ------------------------------------------------------------------------ |
 | `p`      | `int` | Moduł krzywej eliptycznej (liczba pierwsza definiująca pole skończone).  |
-| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`. |
-| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2` ≡ `x^3` + `ax` + `b` mod `p`. |
+| `a`      | `int` | Współczynnik `a` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`. |
+| `b`      | `int` | Współczynnik `b` krzywej eliptycznej `y^2 ≡ x^3 + ax + b mod p`. |
 | `X`, `Y` | `int` | Współrzędne oytzymanego klucza publicznego na krzywej eliptycznej.       |
 | `A`      | `int` | Prywatny klucz użytkownika (losowa liczba).                              |
 
@@ -252,16 +252,16 @@ Implementacja probabilistycznego testu pierwszości oparta na algorytmie Millera
 ##### Działanie funkcji:
 
 1. Obsługuje przypadki brzegowe:
-   - Jeśli `n` ≤ `1`, zwraca `False`.
+   - Jeśli `n ≤ 1`, zwraca `False`.
    - Jeśli `n` wynosi 2 lub 3, zwraca `True`.
    - Jeśli `n` jest parzysta, zwraca `False`.
-2. Znajduje rozkład `n - 1` w postaci `2^s` ⋅ `d`, gdzie `d` jest liczbą nieparzystą:
+2. Znajduje rozkład `n - 1` w postaci `2^s ⋅ d`, gdzie `d` jest liczbą nieparzystą:
    - Iteracyjnie dzieli `n - 1` przez `2`, zwiększając `s`, aż do uzyskania `d`.
 3. Wykonuje `accuracy` prób losowych:
-   - Losuje bazę `a` z przedziału [`2`, `n - 2`].
-   - Oblicza `x` = `a^d` mod `n`.
+   - Losuje bazę `a` z przedziału `[2, n - 2]`.
+   - Oblicza `x = a^d mod n`.
    - Jeśli `x` wynosi `1` lub `n - 1`, próba kończy się sukcesem i algorytm przechodzi do kolejnej próby.
-   - W przeciwnym razie wykonuje `s - 1` kolejnych potęgowań modularnych `x^2^r` mod `n`, aby sprawdzić, czy `x` osiąga wartość `n - 1`.
+   - W przeciwnym razie wykonuje `s - 1` kolejnych potęgowań modularnych `x^2^r mod n`, aby sprawdzić, czy `x` osiąga wartość `n - 1`.
    - Jeśli w żadnym kroku `x` nie osiągnie `n - 1`, liczba `n` jest uznawana za złożoną, a funkcja zwraca `False`.
 4. Jeśli wszystkie próby zakończą się sukcesem, liczba jest uznawana za prawdopodobnie pierwszą i funkcja zwraca `True`.
 
