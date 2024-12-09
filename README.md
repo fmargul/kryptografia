@@ -102,7 +102,9 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych przez kalkulat
 
 ## Protokół Diffiego-Hellmana
 
-Projekt implementuje algorytm Diffie-Hellmana do wymiany kluczy kryptograficznych. Zawiera funkcjonalności umożliwiające generowanie i walidację danych kryptograficznych, takich jak liczby pierwsze, generator grupy, klucze prywatne, klucze publiczne, oraz wspólny sekret. System wspiera zarówno generowanie danych, jak i ich ręczne wprowadzanie z walidacją poprawności.
+Projekt implementuje algorytm Diffie-Hellmana do wymiany kluczy kryptograficznych. Zawiera funkcjonalności umożliwiające generowanie i walidację danych kryptograficznych, takich jak liczby pierwsze, generator grupy, klucze prywatne, klucze publiczne oraz wspólny sekret. System wspiera zarówno automatyczne generowanie danych, jak i ich ręczne wprowadzanie z walidacją poprawności.
+
+---
 
 #### Generowanie klucza publicznego, według protokołu Diffiego-Hellmana
 
@@ -118,13 +120,14 @@ Projekt implementuje algorytm Diffie-Hellmana do wymiany kluczy kryptograficznyc
 
 - **Rozmiary liczb:**
 
-  - **Liczba pierwsza `p`:** Domyślnie generowana o długości **256 bitów** (możliwość dostosowania długości - wpływa to na szybkość).
+  - **Liczba pierwsza `p`:** Możliwość wyboru z predefiniowanych liczb pierwszych (np. 1024-bit, 2048-bit, 3072-bit, 4096-bit) lub podanie własnej liczby.
   - **Generator `g`:** Losowy element grupy, spełniający kryteria generatora w grupie modulo `p`.
   - **Klucz prywatny:** Losowana liczba w zakresie `[1, p-2]`.
 
 - **Opcje użytkownika:**
+
   - **Ręczne wprowadzanie danych:** Użytkownik może podać własne wartości liczb `p`, `g` oraz klucza prywatnego. Dane są walidowane pod kątem poprawności.
-  - **Automatyczne generowanie danych:** Wartości `p`, `g` oraz klucza prywatnego mogą zostać wygenerowane automatycznie.
+  - **Automatyczne generowanie danych:** System umożliwia automatyczne wygenerowanie `p`, `g` oraz klucza prywatnego. Dodatkowo generowany jest losowy klucz publiczny drugiej strony dla celów testowych.
 
 ##### Walidacja poprawności danych:
 
@@ -134,15 +137,25 @@ Podczas ręcznego wprowadzania danych, system weryfikuje:
 2. Czy liczba `g` jest poprawnym generatorem grupy modulo `p`.
 3. Czy klucz prywatny mieści się w zakresie `[1, p-2]`.
 
+##### Generowane wartości:
+
+Podczas generowania danych automatycznie obliczane są następujące wartości:
+
+- **Liczba `p`** – liczba pierwsza spełniająca kryteria bezpieczeństwa.
+- **Generator `g`** – poprawny generator grupy modulo `p`.
+- **Klucz prywatny** – losowa liczba z zakresu `[1, p-2]`.
+- **Klucz publiczny** – obliczony z wzoru `g^(private_key) % p`.
+- **Losowy klucz publiczny drugiej strony** – generowany losowo do testowania wymiany kluczy.
+
 ##### Opis zmiennych:
 
-Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych przez kalkulator.
-| Zmienna | Typ | Opis |
-|---------------|-------|-------------------------------------------------------|
-| `p` | `int` | Liczba pierwsza definiująca grupę modulo. |
-| `g` | `int` | Generator grupy modulo `p`. |
-| `private_key` | `int` | Klucz prywatny użytkownika, losowa liczba `[1, p-2]`. |
-| `public_key` | `int` | Klucz publiczny obliczony z `p`, `g` i `private_key`. |
+| Zmienna       | Typ   | Opis                                                    |
+| ------------- | ----- | ------------------------------------------------------- |
+| `p`           | `int` | Liczba pierwsza definiująca grupę modulo.               |
+| `g`           | `int` | Generator grupy modulo `p`.                             |
+| `private_key` | `int` | Klucz prywatny użytkownika, losowana liczba `[1, p-2]`. |
+| `public_key`  | `int` | Klucz publiczny obliczony z `p`, `g` i `private_key`.   |
+| `other_public_key` | `int` | Losowy klucz publiczny drugiej strony.             |
 
 ---
 
@@ -150,39 +163,41 @@ Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych 
 
 ##### Algorytmy:
 
-- **Modularne potęgowanie** – obliczenie wspólnego sekretu jako $ \text{partner's public key}^{\text{private key}} \mod p $.
+- **Modularne potęgowanie** – obliczenie wspólnego sekretu jako `other_public_key^(private_key) % p`.
 - **Walidacja danych wejściowych** – sprawdzenie poprawności liczb i kluczy.
 
 ##### Dane:
 
 - **Rozmiary liczb:**
 
-  - Liczby `p` i `g` oraz klucze prywatne i publiczne muszą być spójne z wcześniejszymi danymi.
+  - Liczba `p` oraz klucze prywatny i publiczny muszą być spójne z wcześniejszymi danymi.
 
 - **Opcje użytkownika:**
 
-  - **Ręczne wprowadzanie danych:** Użytkownik może podać liczby `p`, `g`, klucz publiczny partnera i swój klucz prywatny, aby obliczyć wspólny sekret.
-  - **Automatyczne generowanie danych:** System może automatycznie wygenerować dane, takie jak liczby `p`, `g`, klucz publiczny partnera i klucz prywatny.
+  - **Ręczne wprowadzanie danych:** Użytkownik może podać liczbę `p`, klucz publiczny partnera i swój klucz prywatny, aby obliczyć wspólny sekret.
 
 ##### Walidacja poprawności danych:
 
 Podczas ręcznego wprowadzania danych, system sprawdza:
 
 1. Czy liczba `p` jest liczbą pierwszą oraz ma postać `p = 2q + 1`.
-2. Czy liczba `g` jest poprawnym generatorem grupy modulo `p`.
-3. Czy klucz publiczny partnera mieści się w zakresie `[1, p-1]`.
-4. Czy klucz prywatny użytkownika mieści się w zakresie `[1, p-2]`.
+2. Czy klucz publiczny partnera mieści się w zakresie `[1, p-1]`.
+3. Czy klucz prywatny użytkownika mieści się w zakresie `[1, p-2]`.
+
+##### Generowane wartości:
+
+Podczas obliczania wspólnego sekretu generowane są następujące dane:
+
+- **Wspólny sekret** – obliczony z wzoru `other_public_key^(private_key) % p`.
 
 ##### Opis zmiennych:
 
-Poniżej przedstawiono szczegółowy opis zmiennych przyjmowanych i obliczanych przez kalkulator.
-| Zmienna | Typ | Opis |
-|-----------------------|-------|-------------------------------------------------|
-| `p` | `int` | Liczba pierwsza definiująca grupę modulo. |
-| `g` | `int` | Generator grupy modulo `p`. |
-| `partners_public_key`| `int` | Klucz publiczny partnera. |
-| `private_key` | `int` | Klucz prywatny użytkownika. |
-| `shared_secret` | `int` | Wspólny sekret obliczony z danych. |
+| Zmienna            | Typ   | Opis                                      |
+| ------------------ | ----- | ----------------------------------------- |
+| `p`                | `int` | Liczba pierwsza definiująca grupę modulo. |
+| `other_public_key` | `int` | Klucz publiczny partnera.                 |
+| `private_key`      | `int` | Klucz prywatny użytkownika.               |
+| `shared_secret`    | `int` | Wspólny sekret obliczony z danych.        |
 
 ---
 
