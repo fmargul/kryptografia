@@ -201,6 +201,39 @@ Podczas obliczania wspólnego sekretu generowane są następujące dane:
 
 ---
 
+## Dokumentacja funkcji modularnego potęgowania
+
+#### Funkcja: `modular_exponentiation`
+
+Implementacja szybkiego potęgowania modularnego pozwalająca efektywnie obliczyć wartość `base^exp % mod`. Jest to kluczowa operacja w algorytmach kryptograficznych, takich jak Diffie-Hellman.
+
+##### Parametry wejściowe:
+
+- **`base`** (`int`): Podstawa potęgowania.
+- **`exp`** (`int`): Wykładnik potęgowania.
+- **`mod`** (`int`): Moduł, względem którego obliczana jest reszta.
+
+##### Zwracana wartość:
+
+- **`result`** (`int`): Wynik obliczeń `base^exp % mod`.
+
+##### Działanie funkcji:
+
+1. Inicjalizuje wynik jako `1`.
+2. Redukuje podstawę modulo: `base = base % mod`.
+3. Wykorzystuje metodę "kwadratowania i mnożenia":
+   - Jeśli wykładnik jest nieparzysty, wynik jest mnożony przez podstawę i redukowany modulo.
+   - Podstawa jest podnoszona do kwadratu i redukowana modulo.
+   - Wykładnik jest dzielony przez 2 (całkowita część).
+4. Zwraca wynik.
+
+##### Złożoność obliczeniowa:
+
+- **Czasowa**: `O(log(exp))`, dzięki redukcji wykładnika o połowę w każdej iteracji.
+- **Pamięciowa**: `O(1)`, ponieważ wykorzystuje stałą ilość pamięci.
+
+---
+
 ## Generowanie par kluczy RSA
 
 ##### Algorytmy:
