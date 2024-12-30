@@ -1,12 +1,14 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from .models import Dictionary
 from django.views.generic import TemplateView
-from .forms import EcdhPublicForm, EcdhSharedForm, RSADecryptForm, RSAEncryptForm, KeysRSAForm, DiffieHellmanPublicForm, DiffieHellmanSharedForm 
+from .forms import EcdhPublicForm, EcdhSharedForm, RSADecryptForm, RSAEncryptForm, KeysRSAForm, DiffieHellmanPublicForm, DiffieHellmanSharedForm, DssForm
 from .ecdh_public import generate_ecdh_public, validate_ecdh_public, calculate_ecdh_public
 from .ecdh_shared import validate_ecdh_shared, calculate_ecdh_shared
 from .rsa_crypt import rsa_get_private_key_primes, validate_p_q, validate_p_q_e, rsa_get_random_e, rsa_encrypt_message, rsa_decrypt_message
 from .diffie_hellman_public import generate_generator, generate_private_key, calculate_public_key, validate_dh_data_public 
 from .diffie_hellman_shared import calculate_shared_secret, validate_dh_data_shared
+from .dss_sign import generate_safe_prime, generate_generator, generate_keys, generate_signature, verify_signature
 
 def home(request):
   return render(request, "home.html")
@@ -341,3 +343,60 @@ class DiffieHellmanSharedView(TemplateView):
             form = DiffieHellmanSharedForm() 
         
         return render(request, self.template_name, {"form": form, "result": result})  
+
+class DssSignView(TemplateView):
+    template_name = "dss_sign.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = DssForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = DssForm(request.POST)
+        if form.is_valid():
+            message = form.cleaned_data["message"]
+            p = form.cleaned_data["p"]
+            q = form.cleaned_data["q"]
+            g = form.cleaned_data["g"]
+
+            # Generowanie brakujących parametrów
+            if not p or not q:
+                p, q = generate_safe_prime(bits=512)
+            if not g:
+                g = generate_generator(p, q)
+
+            # Generowanie kluczy
+            private_key, public_key = generate_keys(p, q, g)
+
+            # Generowanie podpisu
+            signature = generate_signature(message, p, q, g, private_key)
+
+            # Weryfikacja podpisu
+            is_valid = verify_signature(
+                message,
+                signature["r"],
+                signature["s"],
+                public_key,
+                p,
+                q,
+                g
+            )
+
+            return self.render_to_response({
+                "form": form,
+                "parameters": {"p": p, "q": q, "g": g},
+                "keys": {"private_key": private_key, "public_key": public_key},
+                "signature": signature,
+                "is_valid": is_valid,
+                "message": message,
+            })
+        return self.render_to_response({"form": form})
+
+def generate_valid_parameters(request):
+    """Zwraca poprawne, zwalidowane parametry p, q, g."""
+    if request.method == "GET":
+        p, q = generate_safe_prime(bits=512)
+        g = generate_generator(p, q)
+        return JsonResponse({"p": p, "q": q, "g": g})
+    return JsonResponse({"error": "Nieprawidłowa metoda żądania"}, status=405)

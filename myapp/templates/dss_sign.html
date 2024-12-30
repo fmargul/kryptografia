@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Podpis DSS{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 20px;">Podpis cyfrowy DSS</h1>
+
+<form
+  method="post"
+  style="
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  "
+>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div style="display: flex; gap: 10px; justify-content: center">
+        <button
+            type="submit"
+            style="
+                padding: 10px 20px;
+                background-color: #6aa8bd;
+                color: white;
+                border: none;
+                border-radius: 4px;
+            "
+        >
+            Generuj podpis
+        </button>
+    </div>
+</form>
+
+{% if parameters and signature %}
+<h2>Wyniki</h2>
+<table border="1" style="border-collapse: collapse; width: 100%; text-align: left; margin-top: 20px;">
+    <thead style="background-color: #f2f2f2; text-align: center;">
+        <tr>
+            <th>Parametr</th>
+            <th>Wartość</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Liczba pierwsza (p)</td><td>{{ parameters.p }}</td></tr>
+        <tr><td>Liczba pierwsza (q)</td><td>{{ parameters.q }}</td></tr>
+        <tr><td>Generator (g)</td><td>{{ parameters.g }}</td></tr>
+        <tr><td>Klucz prywatny</td><td>{{ keys.private_key }}</td></tr>
+        <tr><td>Klucz publiczny</td><td>{{ keys.public_key }}</td></tr>
+        <tr><td>Podpis r</td><td>{{ signature.r }}</td></tr>
+        <tr><td>Podpis s</td><td>{{ signature.s }}</td></tr>
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

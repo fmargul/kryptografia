@@ -98,3 +98,25 @@ class DiffieHellmanSharedForm(forms.Form):
     p.widget.attrs.update({'style': 'width: 600px;'})
     other_public_key.widget.attrs.update({'style': 'width: 600px;'})
     private_key.widget.attrs.update({'style': 'width: 600px;'})
+    
+class DssForm(forms.Form):
+    message = forms.CharField(
+        label="Wiadomość do podpisania",
+        widget=forms.Textarea(attrs={"rows": 4, "placeholder": "Wpisz wiadomość"}),
+        required=True
+    )
+    p = forms.IntegerField(
+        label="Liczba pierwsza (p)",
+        required=False,
+        widget=forms.NumberInput(attrs={"id": "id_p", "placeholder": "Opcjonalnie wpisz liczbę pierwszą"})
+    )
+    q = forms.IntegerField(
+        label="Liczba pierwsza (q)",
+        required=False,
+        widget=forms.NumberInput(attrs={"id": "id_q", "placeholder": "Opcjonalnie wpisz liczbę pierwszą"})
+    )
+    g = forms.IntegerField(
+        label="Generator (g)",
+        required=False,
+        widget=forms.NumberInput(attrs={"id": "id_g", "placeholder": "Opcjonalnie wpisz generator"})
+    )
