@@ -8,7 +8,7 @@ from .ecdh_shared import validate_ecdh_shared, calculate_ecdh_shared
 from .rsa_crypt import rsa_get_private_key_primes, validate_p_q, validate_p_q_e, rsa_get_random_e, rsa_encrypt_message, rsa_decrypt_message
 from .diffie_hellman_public import generate_generator, generate_private_key, calculate_public_key, validate_dh_data_public 
 from .diffie_hellman_shared import calculate_shared_secret, validate_dh_data_shared
-from .dss_sign import generate_safe_prime, generate_generator, generate_keys, generate_signature, verify_signature
+from .dss_sign import generate_safe_prime, generate_generator_dss, generate_keys, generate_signature, verify_signature
 
 def home(request):
   return render(request, "home.html")
@@ -364,7 +364,7 @@ class DssSignView(TemplateView):
             if not p or not q:
                 p, q = generate_safe_prime(bits=512)
             if not g:
-                g = generate_generator(p, q)
+                g = generate_generator_dss(p, q)
 
             # Generowanie kluczy
             private_key, public_key = generate_keys(p, q, g)
@@ -397,6 +397,6 @@ def generate_valid_parameters(request):
     """Zwraca poprawne, zwalidowane parametry p, q, g."""
     if request.method == "GET":
         p, q = generate_safe_prime(bits=512)
-        g = generate_generator(p, q)
+        g = generate_generator_dss(p, q)
         return JsonResponse({"p": p, "q": q, "g": g})
     return JsonResponse({"error": "Nieprawidłowa metoda żądania"}, status=405)

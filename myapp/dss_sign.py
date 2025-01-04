@@ -51,12 +51,14 @@ def generate_safe_prime(bits=1024, accuracy=50):
         p = 2 * q + 1
     return p, q
 
-def generate_generator(p, q):
-    for h in range(2, p - 1):
+def generate_generator_dss(p, q):
+    """Generuje generator g dla grupy modulo p."""
+    while True:
+        h = random.randint(2, p - 2)  # Losuj h zamiast iterować
         g = modular_exponentiation(h, (p - 1) // q, p)
-        if g > 1:
+        # Sprawdź, czy g jest poprawnym generatorem
+        if g > 1 and modular_exponentiation(g, q, p) == 1:
             return g
-    raise ValueError("Nie udało się znaleźć generatora g.")
 
 def generate_keys(p, q, g):
     private_key = random.randint(1, q - 1)
@@ -90,14 +92,14 @@ def verify_signature(message, r, s, public_key, p, q, g):
 
 if __name__ == "__main__":
     p, q = generate_safe_prime(bits=512)
-    g = generate_generator(p, q)
+    g = generate_generator_dss(p, q)
     print(f"p: {p}\nq: {q}\ng: {g}\n")
 
     private_key, public_key = generate_keys(p, q, g)
     print(f"Klucz prywatny: {private_key}")
     print(f"Klucz publiczny: {public_key}\n")
 
-    message = "Testowanie podpisu DSS"
+    message = "Siema"
 
     signature = generate_signature(message, p, q, g, private_key)
     print(f"Podpis:\nr: {signature['r']}\ns: {signature['s']}\n")
