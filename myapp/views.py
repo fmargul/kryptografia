@@ -360,19 +360,15 @@ class DssSignView(TemplateView):
             q = form.cleaned_data["q"]
             g = form.cleaned_data["g"]
 
-            # Generowanie brakujących parametrów
             if not p or not q:
                 p, q = generate_safe_prime(bits=512)
             if not g:
                 g = generate_generator_dss(p, q)
 
-            # Generowanie kluczy
             private_key, public_key = generate_keys(p, q, g)
 
-            # Generowanie podpisu
             signature = generate_signature(message, p, q, g, private_key)
 
-            # Weryfikacja podpisu
             is_valid = verify_signature(
                 message,
                 signature["r"],
@@ -394,9 +390,35 @@ class DssSignView(TemplateView):
         return self.render_to_response({"form": form})
 
 def generate_valid_parameters(request):
-    """Zwraca poprawne, zwalidowane parametry p, q, g."""
     if request.method == "GET":
         p, q = generate_safe_prime(bits=512)
         g = generate_generator_dss(p, q)
         return JsonResponse({"p": p, "q": q, "g": g})
     return JsonResponse({"error": "Nieprawidłowa metoda żądania"}, status=405)
+  
+class DssVerifyView(TemplateView):
+    template_name = "dss_verify.html"
+
+    def post(self, request, *args, **kwargs):
+        message = request.POST.get("message")
+        p = int(request.POST.get("p"))
+        q = int(request.POST.get("q"))
+        g = int(request.POST.get("g"))
+        public_key = int(request.POST.get("public_key"))
+        r = int(request.POST.get("r"))
+        s = int(request.POST.get("s"))
+
+        result = verify_signature(message, r, s, public_key, p, q, g)
+
+        return render(request, self.template_name, {
+            "result": result,
+            "form_data": {
+                "message": message,
+                "p": p,
+                "q": q,
+                "g": g,
+                "public_key": public_key,
+                "r": r,
+                "s": s
+            }
+        })

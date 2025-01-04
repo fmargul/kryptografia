@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from myapp.views import EcdhPublicView, EcdhSharedView, RSAKeysView, RSAEncryptView, RSADecryptView, DiffieHellmanPublicView, DiffieHellmanSharedView, DssSignView, generate_valid_parameters
+from myapp.views import EcdhPublicView, EcdhSharedView, RSAKeysView, RSAEncryptView, RSADecryptView, DiffieHellmanPublicView, DiffieHellmanSharedView, DssSignView, generate_valid_parameters, DssVerifyView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,4 +17,5 @@ urlpatterns = [
     path('diffie_hellman_shared/', DiffieHellmanSharedView.as_view(), name='diffie_hellman_shared'),
     path("dss-sign/", DssSignView.as_view(), name="dss_sign"),
     path("generate-valid-parameters/", generate_valid_parameters, name="generate_valid_parameters"),
+    path("verify-signature/", DssVerifyView.as_view(), name="dss_verify"),
 ]
