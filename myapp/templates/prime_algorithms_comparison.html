@@ -2,5 +2,11 @@
 {% load static %}
 {% block content %}
 <h1>Porównanie szybkości algorytmów sprawdzania pierwszości liczb</h1>
-<center><img class = "ecdh" src="{% static 'myapp/images/prime.svg' %}"></center>
+<center><img class="prime" src="{% static '/myapp/images/prime_checking.svg' %}"></center>
+
+<h2>Parametry obliczeń</h2>
+<ul>
+    <li><strong>Accuracy (liczba prób w teście Millera-Rabina):</strong> 40</li>
+    <li><strong>Liczba powtórzeń dla uśrednienia:</strong> 3</li>
+</ul>
 {% endblock %}
