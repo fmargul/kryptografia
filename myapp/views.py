@@ -354,6 +354,10 @@ class DssSignView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         form = DssForm(request.POST)
+        
+        if "reset" in request.POST:
+            return self.render_to_response({"form": DssForm()})
+        
         if form.is_valid():
             message = form.cleaned_data["message"]
             p = form.cleaned_data["p"]

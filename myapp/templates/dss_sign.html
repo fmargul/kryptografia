@@ -3,20 +3,48 @@
 
 {% block content %}
 <h1 style="text-align: center; margin-bottom: 20px;">Podpis cyfrowy DSS</h1>
+<p style="text-align: center; font-style: italic; margin-bottom: 20px;">
+    Wprowadź swoje wartości i/lub kliknij "Generuj podpis", aby automatycznie wygenerować bezpieczne parametry dla podpisu cyfrowego.
+</p>
 
 <form
     method="post"
     style="
+        display: flex;
+        flex-direction: column;
+        margin: 0 350px;
         max-width: 600px;
-        margin: 0 auto;
         padding: 20px;
         border-radius: 8px;
         background-color: #f9f9f9;
     "
 >
     {% csrf_token %}
-    {{ form.as_p }}
-    <div style="display: flex; gap: 10px; justify-content: center">
+    <div class="form-field" style="margin-bottom: 15px;">
+        <label for="message" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Wiadomość do podpisania</label>
+        <textarea id="message" name="message" rows="3" style="width: 100%;" required placeholder="Wpisz wiadomość do podpisania">{{ message|default_if_none:'' }}</textarea>
+    </div>
+
+    <div class="form-field">
+        <label for="p" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (p)</label>
+        <input type="number" id="p" name="p" value="{{ parameters.p|default_if_none:'' }}" style="width: 100%;" placeholder="Wpisz liczbę pierwszą p">
+    </div>
+
+    <div class="form-field">
+        <label for="q" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (q)</label>
+        <input type="number" id="q" name="q" value="{{ parameters.q|default_if_none:'' }}" style="width: 100%;" placeholder="Wpisz liczbę pierwszą q">
+    </div>
+
+    <div class="form-field">
+        <label for="g" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Generator (g)</label>
+        <input type="number" id="g" name="g" value="{{ parameters.g|default_if_none:'' }}" style="width: 100%;" placeholder="Wpisz wartość generatora g">
+    </div>
+
+    <div class="form-field">
+        <label for="public_key" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Klucz publiczny</label>
+        <input type="number" id="public_key" name="public_key" value="{{ keys.public_key|default_if_none:'' }}" style="width: 100%;" placeholder="Klucz publiczny (automatycznie generowany)" disabled>
+    </div>
+    <div style="display: flex; gap: 10px; margin-top: 15px; justify-content: center">
         <button
             type="submit"
             style="
@@ -28,6 +56,9 @@
             "
         >
             Generuj podpis
+        </button>
+        <button type="submit" name="reset" style="padding: 10px 20px; background-color: #e57373; color: white; border: none; border-radius: 4px;">
+            Wyczyść
         </button>
     </div>
 </form>
