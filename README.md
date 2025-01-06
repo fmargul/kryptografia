@@ -435,4 +435,105 @@ _x ≡ a<sub>k</sub> (mod m<sub>k</sub>)_
 - **Czasowa**: `O(k^3)`.
 - **Pamięciowa**: `O(k)`.
 
+# **Podpis cyfrowy DSS (Digital Signature Standard)**
+
+## **Opis algorytmów i zmiennych**
+
+---
+
+### **Algorytmy używane w podpisie DSS**
+
+- **Generowanie bezpiecznych liczb pierwszych `p` i `q`** – Algorytm generuje liczby pierwsze `p` i `q` w taki sposób, że `p = 2q + 1`, co zapewnia odpowiedni poziom bezpieczeństwa w kryptografii asymetrycznej.
+- **Modularne potęgowanie (algorytm szybkiego potęgowania)** – Algorytm oblicza `base^exp % mod` z optymalną złożonością `O(log(exp))`, umożliwiając szybkie obliczenia w dużych ciałach skończonych.
+- **Test Millera-Rabina** – probabilistyczny test pierwszości do sprawdzania, czy liczba `n` jest prawdopodobnie pierwsza.
+- **Obliczanie odwrotności modularnej (rozszerzony algorytm Euklidesa)** – Algorytm znajduje liczbę `x`, która spełnia równanie modularne `a * x ≡ 1 mod m`.
+- **Generowanie generatora `g`** – Algorytm znajduje generator `g` dla grupy multiplikatywnej modulo `p`, zgodny z wymaganiami standardu DSS.
+- **Funkcja skrótu SHA-256** – Funkcja skrótu stosowana do obliczania hasha wiadomości, aby zapewnić jej integralność.
+- **Generowanie podpisu cyfrowego (DSS)** – Algorytm generuje wartości `r` i `s`, które tworzą podpis cyfrowy dla wiadomości.
+- **Weryfikacja podpisu** – Algorytm sprawdza, czy podpis `r, s` jest poprawny dla wiadomości, klucza publicznego i parametrów `p, q, g`.
+
+---
+
+### **Dane wejściowe i zmienne w formularzu**
+
+| **Zmienna**   | **Typ** | **Opis**                                                                                   |
+| ------------- | ------- | ------------------------------------------------------------------------------------------ |
+| `p`           | `int`   | Liczba pierwsza `p` definiująca wielkość grupy w arytmetyce modularnej.                     |
+| `q`           | `int`   | Liczba pierwsza `q`, taka że `p = 2q + 1`.                                                   |
+| `g`           | `int`   | Generator `g` grupy multiplikatywnej modulo `p`.                                             |
+| `private_key` | `int`   | Klucz prywatny generowany losowo w zakresie `[1, q - 1]`.                                    |
+| `public_key`  | `int`   | Klucz publiczny obliczony na podstawie klucza prywatnego i generatora `g`.                   |
+| `message`     | `str`   | Wiadomość tekstowa, którą chcemy podpisać lub zweryfikować.                                  |
+| `r`           | `int`   | Pierwsza składowa podpisu, będąca resztą z `g^k % p` dla losowego `k`.                       |
+| `s`           | `int`   | Druga składowa podpisu, obliczana według wzoru `(k^-1 * (H(m) + private_key * r)) % q`.      |
+| `hash`        | `int`   | Skrót wiadomości `message`, obliczony przy użyciu funkcji SHA-256.                          |
+
+---
+
+## **Proces podpisywania wiadomości**
+
+1. **Generowanie parametrów:**
+   - `p`, `q` – losowane bezpieczne liczby pierwsze.
+   - `g` – generowany na podstawie `p` i `q`.
+2. **Generowanie klucza:**
+   - `private_key` – losowana liczba całkowita z zakresu `[1, q - 1]`.
+   - `public_key` – obliczany jako `g^(private_key) % p`.
+3. **Tworzenie podpisu:**
+   - Skrót wiadomości `hash` obliczany jest przy użyciu SHA-256.
+   - Losowana jest liczba `k` w zakresie `[1, q - 1]`.
+   - Obliczane są wartości `r = (g^k % p) % q` oraz `s = (k^-1 * (hash + private_key * r)) % q`.
+4. **Wynik:** Podpis `r, s`.
+
+---
+
+## **Proces weryfikacji podpisu**
+
+1. **Dane wejściowe:**
+   - Wiadomość `message`.
+   - Klucz publiczny `public_key`.
+   - Parametry `p`, `q`, `g`.
+   - Podpis `r, s`.
+2. **Obliczanie wartości pomocniczych:**
+   - Skrót `hash` wiadomości `message`.
+   - `w = s^-1 mod q`.
+   - `u1 = (hash * w) % q`.
+   - `u2 = (r * w) % q`.
+   - `v = ((g^u1 * public_key^u2) % p) % q`.
+3. **Porównanie:** Jeśli `v == r`, podpis jest poprawny.
+
+---
+
+## **Tabela zmiennych używanych w podpisywaniu i weryfikacji DSS**
+
+| **Zmienna**   | **Opis**                                                                                     |
+| ------------- | ---------------------------------------------------------------------------------------------- |
+| `p`           | Liczba pierwsza definiująca wielkość grupy multiplikatywnej.                                   |
+| `q`           | Liczba pierwsza `q`, taka że `p = 2q + 1`.                                                     |
+| `g`           | Generator grupy multiplikatywnej modulo `p`.                                                   |
+| `private_key` | Klucz prywatny generowany losowo.                                                              |
+| `public_key`  | Klucz publiczny obliczony na podstawie klucza prywatnego i generatora `g`.                     |
+| `message`     | Wiadomość tekstowa, którą użytkownik chce podpisać lub zweryfikować.                           |
+| `hash`        | Skrót wiadomości obliczony funkcją SHA-256.                                                    |
+| `r`           | Pierwsza składowa podpisu (reszta z `g^k % p % q`).                                            |
+| `s`           | Druga składowa podpisu obliczona jako `(k^-1 * (H(m) + private_key * r)) % q`.                 |
+
+---
+
+## **Przykład działania**
+
+**Dane wejściowe:**
+
+- `message` = `"Siema"`
+- `p` = `214812666723035169210759749461557895022004251355959279839750027389964874328959`
+- `q` = `107406333361517584605379874730778947511002125677979639919875013694982437164479`
+- `g` = `124149575220814918440205197986309841652837557309216961533883139806300538844735`
+- `private_key` = `1955191092169490144943690483701004900057193205425925173611422761579023847739`
+
+**Podpis:**
+
+- `r` = `76334004189471101081438485804925467938275079046741176733559552717161980129619`
+- `s` = `49806801595352461013040056473078183659973485553848090234012356690341888725936`
+
+**Wynik weryfikacji:** Podpis poprawny.
+
 ---
