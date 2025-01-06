@@ -4,11 +4,23 @@
 {% block content %}
 <h1 style="text-align: center; margin-bottom: 20px;">Weryfikacja Podpisu DSS</h1>
 
+{% if form.non_field_errors %}
+    <div style="color: red; border: 1px solid red; padding: 5px; margin-bottom: 20px; text-align: center; background-color: #f9c4c49b;">
+        <ul>
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
 <form
     method="post"
     style="
+        display: flex;
+        flex-direction: column;
+        margin: 0 350px;
         max-width: 600px;
-        margin: 0 auto;
         padding: 20px;
         border-radius: 8px;
         background-color: #f9f9f9;
@@ -17,37 +29,37 @@
     {% csrf_token %}
     
     <div class="form-field" style="margin-bottom: 15px;">
-        <label for="message" style="font-weight: bold;">Wiadomość:</label>
+        <label for="message" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Wiadomość</label>
         <textarea id="message" name="message" rows="3" style="width: 100%;" required placeholder="Wpisz wiadomość do weryfikacji"></textarea>
     </div>
 
     <div class="form-field">
-        <label for="p" style="font-weight: bold;">Liczba pierwsza (p):</label>
+        <label for="p" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (p)</label>
         <input type="number" id="p" name="p" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą p">
     </div>
 
     <div class="form-field">
-        <label for="q" style="font-weight: bold;">Liczba pierwsza (q):</label>
+        <label for="q" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (q)</label>
         <input type="number" id="q" name="q" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą q">
     </div>
 
     <div class="form-field">
-        <label for="g" style="font-weight: bold;">Generator (g):</label>
+        <label for="g" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Generator (g)</label>
         <input type="number" id="g" name="g" style="width: 100%;" required placeholder="Wpisz wartość generatora g">
     </div>
 
     <div class="form-field">
-        <label for="public_key" style="font-weight: bold;">Klucz publiczny:</label>
+        <label for="public_key" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Klucz publiczny</label>
         <input type="number" id="public_key" name="public_key" style="width: 100%;" required placeholder="Wpisz klucz publiczny">
     </div>
 
     <div class="form-field">
-        <label for="r" style="font-weight: bold;">Podpis r:</label>
+        <label for="r" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Podpis r</label>
         <input type="number" id="r" name="r" style="width: 100%;" required placeholder="Wpisz wartość r">
     </div>
 
     <div class="form-field">
-        <label for="s" style="font-weight: bold;">Podpis s:</label>
+        <label for="s" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Podpis s</label>
         <input type="number" id="s" name="s" style="width: 100%;" required placeholder="Wpisz wartość s">
     </div>
 
@@ -68,7 +80,7 @@
 </form>
 
 {% if result is not none %}
-    <h2 style="text-align: center; margin-top: 20px;">Wynik weryfikacji:</h2>
+    <h2 style="text-align: center; margin-top: 20px;">Wynik weryfikacji</h2>
     <p style="text-align: center; font-weight: bold; color: {% if result %}green{% else %}red{% endif %};">
         {% if result %}
             Podpis jest poprawny!
