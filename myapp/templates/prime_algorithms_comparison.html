@@ -2,11 +2,13 @@
 {% load static %}
 {% block content %}
 <h1>Porównanie szybkości algorytmów sprawdzania pierwszości liczb</h1>
-<center><img class="prime" src="{% static '/myapp/images/prime_checking.svg' %}"></center>
+<center><img class="prime" src="{% static '/myapp/images/prime_checking_custom.svg' %}"></center>
+<center><img class="prime" src="{% static '/myapp/images/prime_checking_more.svg' %}"></center>
 
 <h2>Parametry obliczeń</h2>
 <ul>
     <li><strong>Accuracy (liczba prób w teście Millera-Rabina):</strong> 40</li>
-    <li><strong>Liczba powtórzeń dla uśrednienia:</strong> 3</li>
+    <li><strong>Liczba powtórzeń dla uśrednienia:</strong> 5</li>
 </ul>
+
 {% endblock %}
