@@ -1,4 +1,55 @@
-{% extends "base.html" %} {% block title %} Home Page {% endblock %}
-{% block content %}
+{% extends "base.html" %}
+{% load static %}
 
+{% block title %}Kryptograficzny Kalkulator Online{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>Kryptograficzny Kalkulator Online</h1>
+        <img src="{% static 'myapp/images/baner.png' %}" alt="Kryptograficzny Kalkulator" class="header-image">
+    </header>
+    
+    <main>
+        <h2>Spis zaimplementowanych prymitywów kryptograficznych</h2>
+        <section id="rsa">
+            <h3>RSA (Rivest-Shamir-Adleman)</h3>
+            <ul>
+                <li>Generowanie kluczy publicznych i prywatnych</li>
+                <li>Szyfrowanie i odszyfrowywanie wiadomości</li>
+            </ul>
+        </section>
+        
+        <section id="diffie-hellman">
+            <h3>Protokół Diffiego-Hellmana</h3>
+            <ul>
+                <li>Obliczanie kluczy publicznych</li>
+                <li>Wspólne ustalanie sekretów</li>
+            </ul>
+        </section>
+        
+        <section id="dsa">
+            <h3>DSA (Digital Signature Algorithm)</h3>
+            <ul>
+                <li>Tworzenie podpisów cyfrowych</li>
+                <li>Weryfikacja podpisów</li>
+            </ul>
+        </section>
+        
+        <section id="ecdh">
+            <h3>ECDH (Elliptic Curve Diffie-Hellman)</h3>
+            <ul>
+                <li>Generowanie klucza sesyjnego i klucza publicznego</li>
+            </ul>
+        </section>
+        
+        <section id="performance-comparison">
+            <h3>Porównanie wydajności algorytmów</h3>
+            <ul>
+                <li>Dodawanie punktów</li>
+                <li>Chińskie Twierdzenie o Resztach (CRT)</li>
+                <li>Potęgowanie</li>
+                <li>Testy pierwszości liczb</li>
+            </ul>
+        </section>
+    </main>
 {% endblock %}
