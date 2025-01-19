@@ -1,4 +1,7 @@
+from xml.dom import ValidationErr
 from django import forms
+
+from myapp.scripts import is_prime
 
 
 class EcdhPublicForm(forms.Form):
@@ -120,3 +123,14 @@ class DssForm(forms.Form):
         required=False,
         widget=forms.NumberInput(attrs={"id": "id_g", "placeholder": "Opcjonalnie wpisz generator"})
     )
+    def clean_p(self):
+        p = self.cleaned_data.get("p")
+        if p and not is_prime(p):  # Sprawdź, czy p jest liczbą pierwszą
+            raise ValidationErr("Liczba p musi być liczbą pierwszą!")
+        return p
+
+    def clean_q(self):
+        q = self.cleaned_data.get("q")
+        if q and not is_prime(q):  # Sprawdź, czy q jest liczbą pierwszą
+            raise ValidationErr("Liczba q musi być liczbą pierwszą!")
+        return q

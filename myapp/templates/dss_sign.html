@@ -28,11 +28,17 @@
     <div class="form-field">
         <label for="p" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (p)</label>
         <input type="number" id="p" name="p" value="{{ parameters.p|default_if_none:'' }}" style="width: 100%;" placeholder="Wpisz liczbę pierwszą p">
+        {% if form.p.errors %}
+            <p style="color: red;">{{ form.p.errors.0 }}</p>
+        {% endif %}
     </div>
 
     <div class="form-field">
         <label for="q" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (q)</label>
         <input type="number" id="q" name="q" value="{{ parameters.q|default_if_none:'' }}" style="width: 100%;" placeholder="Wpisz liczbę pierwszą q">
+        {% if form.q.errors %}
+            <p style="color: red;">{{ form.q.errors.0 }}</p>
+        {% endif %}
     </div>
 
     <div class="form-field">
