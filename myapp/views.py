@@ -415,14 +415,12 @@ class DssVerifyView(TemplateView):
         result = verify_signature(message, r, s, public_key, p, q, g)
 
         return render(request, self.template_name, {
-            "result": result,
-            "form_data": {
-                "message": message,
-                "p": p,
-                "q": q,
-                "g": g,
-                "public_key": public_key,
-                "r": r,
-                "s": s
-            }
-        })
+    "message": message,
+    "p": p,
+    "q": q,
+    "g": g,
+    "public_key": public_key,
+    "r": r,
+    "s": s,
+    "result": result
+})

@@ -30,37 +30,37 @@
     
     <div class="form-field" style="margin-bottom: 15px;">
         <label for="message" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Wiadomość</label>
-        <textarea id="message" name="message" rows="3" style="width: 100%;" required placeholder="Wpisz wiadomość do weryfikacji"></textarea>
+        <textarea id="message" name="message" rows="3" style="width: 100%;" required placeholder="Wpisz wiadomość do weryfikacji">{{ message|default_if_none:'' }}</textarea>
     </div>
 
     <div class="form-field">
         <label for="p" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (p)</label>
-        <input type="number" id="p" name="p" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą p">
+        <input type="number" id="p" name="p" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą p" value="{{ p|default_if_none:'' }}">
     </div>
 
     <div class="form-field">
         <label for="q" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Liczba pierwsza (q)</label>
-        <input type="number" id="q" name="q" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą q">
+        <input type="number" id="q" name="q" style="width: 100%;" required placeholder="Wpisz liczbę pierwszą q" value="{{ q|default_if_none:'' }}">
     </div>
 
     <div class="form-field">
         <label for="g" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Generator (g)</label>
-        <input type="number" id="g" name="g" style="width: 100%;" required placeholder="Wpisz wartość generatora g">
+        <input type="number" id="g" name="g" style="width: 100%;" required placeholder="Wpisz wartość generatora g" value="{{ g|default_if_none:'' }}">
     </div>
 
     <div class="form-field">
         <label for="public_key" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Klucz publiczny</label>
-        <input type="number" id="public_key" name="public_key" style="width: 100%;" required placeholder="Wpisz klucz publiczny">
+        <input type="number" id="public_key" name="public_key" style="width: 100%;" required placeholder="Wpisz klucz publiczny" value="{{ public_key|default_if_none:'' }}">
     </div>
 
     <div class="form-field">
         <label for="r" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Podpis r</label>
-        <input type="number" id="r" name="r" style="width: 100%;" required placeholder="Wpisz wartość r">
+        <input type="number" id="r" name="r" style="width: 100%;" required placeholder="Wpisz wartość r" value="{{ r|default_if_none:'' }}">
     </div>
 
     <div class="form-field">
         <label for="s" style="font-weight: bold; display: block; padding: 10px 20px; text-align: center;">Podpis s</label>
-        <input type="number" id="s" name="s" style="width: 100%;" required placeholder="Wpisz wartość s">
+        <input type="number" id="s" name="s" style="width: 100%;" required placeholder="Wpisz wartość s" value="{{ s|default_if_none:'' }}">
     </div>
 
     <div style="display: flex; justify-content: center; margin-top: 15px;">
