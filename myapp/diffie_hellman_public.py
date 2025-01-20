@@ -69,7 +69,7 @@ def generate_safe_prime(bits, accuracy):
 def generate_generator(p):
     while True:
         g = random.randint(1, p - 1)
-        if pow(g, 2, p) != 1 and pow(g, (p - 1) // 2, p) != 1 and g % 2 != 0:
+        if pow(g, 2, p) != 1 and pow(g, (p - 1) // 2, p) != 1:
             return g
 
 # Generowanie klucza prywatnego
